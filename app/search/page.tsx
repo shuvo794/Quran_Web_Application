@@ -16,9 +16,14 @@ export default function SearchPage() {
     setLoading(true);
     try {
       const isArabic = /[\u0600-\u06FF]/.test(query);
-      const lang = isArabic ? 'quran-simple' : 'en.asad';
+      const lang = isArabic ? 'ar' : 'en';
       
       const res = await fetch(`https://api.alquran.cloud/v1/search/${encodeURIComponent(query)}/all/${lang}`);
+      
+      if (!res.ok) {
+        throw new Error(`API returned ${res.status}: Too many results or server error.`);
+      }
+
       const data = await res.json();
       
       if (data.code === 200) {
@@ -26,8 +31,9 @@ export default function SearchPage() {
       } else {
         setResults([]);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      alert('Search failed: ' + err.message);
       setResults([]);
     } finally {
       setLoading(false);
