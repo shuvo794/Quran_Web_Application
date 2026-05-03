@@ -56,8 +56,15 @@ export default function AyahCard({ ayah, surahId }: Props) {
                 {ayah.words.map((word, idx) => (
                   <div key={word.id || idx} className="relative group cursor-pointer hover:text-brand-500 transition-colors">
                     {word.charTypeName === 'end' ? (
-                      <span className="text-brand-500 mx-2 opacity-80 select-none">
-                        {word.arabic}
+                      <span className="relative flex items-center justify-center w-[2.2em] h-[2.2em] mx-1.5 text-brand-500 opacity-90 select-none group-hover:text-brand-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path d="M50 4 C 55 12, 75 14, 82 22 C 86 28, 96 35, 96 50 C 96 65, 86 72, 82 78 C 75 86, 55 88, 50 96 C 45 88, 25 86, 18 78 C 14 72, 4 65, 4 50 C 4 35, 14 28, 18 22 C 25 14, 45 12, 50 4 Z" strokeLinejoin="round" fill="currentColor" fillOpacity="0.05"/>
+                          <circle cx="50" cy="50" r="30" strokeWidth="2" opacity="0.6"/>
+                          <circle cx="50" cy="50" r="26" strokeWidth="1" opacity="0.3"/>
+                        </svg>
+                        <span className="relative z-10 font-bold" style={{ fontSize: '0.5em', transform: 'translateY(2%)' }}>
+                          {word.arabic}
+                        </span>
                       </span>
                     ) : (
                       <span>{word.arabic}</span>
