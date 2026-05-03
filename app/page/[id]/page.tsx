@@ -1,5 +1,6 @@
-import { getPageById } from '@/lib/api';
+import { getPageById, getAllSurahs } from '@/lib/api';
 import AyahCard from '@/components/AyahCard';
+import SurahHeader from '@/components/SurahHeader';
 
 export async function generateStaticParams() {
   return Array.from({ length: 604 }, (_, i) => ({
@@ -10,18 +11,22 @@ export async function generateStaticParams() {
 export default async function PageReader({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const page = await getPageById(parseInt(resolvedParams.id));
+  const allSurahs = await getAllSurahs().catch(() => []);
 
   return (
     <div className="max-w-4xl mx-auto p-6 pb-24">
-      <div className="bg-white dark:bg-[#1F1F1F] p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 text-center mb-6">
-        <h1 className="text-4xl font-amiri font-bold text-[var(--foreground)] mb-2" dir="rtl">الصفحة {page.id}</h1>
-        <h2 className="text-xl font-bold text-[var(--foreground)]">Page {page.id}</h2>
-      </div>
-      
       <div>
-        {page.ayahs.map((ayah, i) => (
-          <AyahCard key={`${page.id}-${i}`} ayah={ayah} surahId={ayah.surahId!} />
-        ))}
+        {page.ayahs.map((ayah, i) => {
+          const isNewSurah = i === 0 || ayah.surahId !== page.ayahs[i - 1].surahId;
+          const surahInfo = allSurahs.find(s => s.id === ayah.surahId);
+          
+          return (
+            <div key={`${page.id}-${i}`}>
+              {isNewSurah && surahInfo && <SurahHeader surah={surahInfo} />}
+              <AyahCard ayah={ayah} surahId={ayah.surahId!} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
