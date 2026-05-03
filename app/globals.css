@@ -2,12 +2,17 @@
 
 @theme {
   --color-brand-500: #10b981;
-  --color-dark-bg: #121212;
-  --color-dark-surface: #1e1e1e;
-  --color-dark-border: #333333;
 }
 
 :root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --surface: #f9fafb;
+  --border: #e5e7eb;
+  --accent: #10b981;
+}
+
+.dark {
   --background: #121212;
   --foreground: #f3f4f6;
   --surface: #1e1e1e;
@@ -28,7 +33,7 @@ body {
   color: var(--foreground);
 }
 
-/* Custom scrollbar for dark theme */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -43,5 +48,9 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af; /* A more neutral hover color */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }

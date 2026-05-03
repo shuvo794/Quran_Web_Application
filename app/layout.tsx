@@ -3,6 +3,7 @@ import { Inter, Amiri, Scheherazade_New } from "next/font/google";
 import "./globals.css";
 import { getAllSurahs } from "@/lib/api";
 import ClientLayout from "@/components/ClientLayout";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,9 +39,12 @@ export default async function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${amiri.variable} ${scheherazade.variable}`}
+      suppressHydrationWarning
     >
       <body className="min-h-screen antialiased bg-[var(--background)] text-[var(--foreground)]">
-        <ClientLayout surahs={surahs}>{children}</ClientLayout>
+        <ThemeProvider>
+          <ClientLayout surahs={surahs}>{children}</ClientLayout>
+        </ThemeProvider>
       </body>
     </html>
   );

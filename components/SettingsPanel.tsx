@@ -1,7 +1,9 @@
 'use client';
 
 import { useSettingsStore } from '@/store/settings';
-import { X } from 'lucide-react';
+import { X, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 interface Props {
   isOpen: boolean;
@@ -10,6 +12,12 @@ interface Props {
 
 export default function SettingsPanel({ isOpen, onClose }: Props) {
   const { arabicFont, arabicFontSize, translationFontSize, setArabicFont, setArabicFontSize, setTranslationFontSize } = useSettingsStore();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!isOpen) return null;
 
@@ -25,9 +33,30 @@ export default function SettingsPanel({ isOpen, onClose }: Props) {
         </div>
 
         <div className="space-y-8 flex-1 overflow-y-auto pr-2">
+          {/* Theme Select */}
+          {mounted && (
+            <div>
+              <label className="block text-sm font-semibold mb-3 text-gray-500 dark:text-gray-300">Theme</label>
+              <div className="flex gap-2 p-1 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <button
+                  onClick={() => setTheme('light')}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${theme === 'light' ? 'bg-[var(--surface)] shadow shadow-sm text-brand-500' : 'text-gray-500'}`}
+                >
+                  <Sun size={18} /> Light
+                </button>
+                <button
+                  onClick={() => setTheme('dark')}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${theme === 'dark' ? 'bg-[var(--surface)] shadow shadow-sm text-brand-500' : 'text-gray-500'}`}
+                >
+                  <Moon size={18} /> Dark
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Arabic Font Select */}
           <div>
-            <label className="block text-sm font-semibold mb-3 text-gray-300">Arabic Font</label>
+            <label className="block text-sm font-semibold mb-3 text-gray-500 dark:text-gray-300">Arabic Font</label>
             <div className="space-y-2">
               <label className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] hover:border-brand-500 cursor-pointer transition-colors bg-[var(--background)]">
                 <input 
@@ -57,7 +86,7 @@ export default function SettingsPanel({ isOpen, onClose }: Props) {
           {/* Arabic Font Size */}
           <div>
             <div className="flex justify-between items-center mb-3">
-              <label className="text-sm font-semibold text-gray-300">Arabic Font Size</label>
+              <label className="text-sm font-semibold text-gray-500 dark:text-gray-300">Arabic Font Size</label>
               <span className="text-sm text-brand-500">{arabicFontSize}px</span>
             </div>
             <input 
@@ -72,7 +101,7 @@ export default function SettingsPanel({ isOpen, onClose }: Props) {
           {/* Translation Font Size */}
           <div>
             <div className="flex justify-between items-center mb-3">
-              <label className="text-sm font-semibold text-gray-300">Translation Size</label>
+              <label className="text-sm font-semibold text-gray-500 dark:text-gray-300">Translation Size</label>
               <span className="text-sm text-brand-500">{translationFontSize}px</span>
             </div>
             <input 
