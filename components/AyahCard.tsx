@@ -47,13 +47,40 @@ export default function AyahCard({ ayah, surahId }: Props) {
         {/* Main Content */}
         <div className="flex-1 min-w-0">
           <div className="mb-8">
-            <p 
-              className={`${arabicFont} leading-loose text-right text-[var(--foreground)]`} 
-              style={{ fontSize: `${arabicFontSize}px` }}
-              dir="rtl"
-            >
-              {ayah.arabic}
-            </p>
+            {ayah.words && ayah.words.length > 0 ? (
+              <div 
+                className={`${arabicFont} leading-loose text-right text-[var(--foreground)] flex flex-wrap justify-start items-center gap-x-2.5 gap-y-6`}
+                style={{ fontSize: `${arabicFontSize}px` }}
+                dir="rtl"
+              >
+                {ayah.words.map((word, idx) => (
+                  <div key={word.id || idx} className="relative group cursor-pointer hover:text-brand-500 transition-colors">
+                    {word.charTypeName === 'end' ? (
+                      <span className="text-brand-500 mx-2 opacity-80 select-none">
+                        {word.arabic}
+                      </span>
+                    ) : (
+                      <span>{word.arabic}</span>
+                    )}
+                    {word.translation && word.charTypeName === 'word' && (
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#333333] text-white text-[15px] px-3 py-1.5 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none shadow-lg font-inter tracking-wide font-medium">
+                        {word.translation}
+                        {/* Tooltip triangle */}
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-0.5 border-4 border-transparent border-t-[#333333]"></div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p 
+                className={`${arabicFont} leading-loose text-right text-[var(--foreground)]`} 
+                style={{ fontSize: `${arabicFontSize}px` }}
+                dir="rtl"
+              >
+                {ayah.arabic}
+              </p>
+            )}
           </div>
           
           <div>

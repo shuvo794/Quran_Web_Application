@@ -1,4 +1,5 @@
 import { Surah } from '@/lib/api';
+import Link from 'next/link';
 
 interface Props {
   surah: Surah;
@@ -24,8 +25,10 @@ export default function SurahHeader({ surah, showBismillah = true }: Props) {
 
       {/* Center content */}
       <div className="flex-1 text-center relative z-10 shrink-0">
-        <h2 className="text-[26px] font-bold text-gray-800 dark:text-gray-100 mb-1">Surah {surah.nameEnglish}</h2>
-        <p className="text-[13px] text-gray-400 font-medium">Ayah-{surah.numberOfAyahs}, {surah.revelationType}</p>
+        <Link href={`/surah/${surah.id}`} className="inline-block group hover:opacity-80 transition-opacity">
+          <h2 className="text-[26px] font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-brand-500 transition-colors">Surah {surah.nameEnglish}</h2>
+        </Link>
+        <p className="text-[13px] text-gray-400 font-medium block">Ayah-{surah.numberOfAyahs}, {surah.revelationType}</p>
       </div>
 
       {/* Right side Bismillah */}

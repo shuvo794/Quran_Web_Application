@@ -119,19 +119,31 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
               
               return (
                 <div key={juz} className="mb-2">
-                  <button 
-                    onClick={() => setExpandedJuz(expandedJuz === juz ? null : juz)}
-                    className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-xl hover:shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all text-left"
-                  >
-                    <div>
-                      <h3 className="font-bold text-[15px] text-brand-500">Juz {juz}</h3>
-                      <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-                    </div>
-                    <div className="text-center">
-                      <span className="block font-bold text-gray-700 dark:text-gray-300 text-sm">{surahIds.length}</span>
-                      <span className="text-[10px] text-gray-400">Surah</span>
-                    </div>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/juz/${juz}`}
+                      onClick={() => onClose()}
+                      className="flex-1 flex items-center justify-between p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-xl hover:shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all text-left"
+                    >
+                      <div>
+                        <h3 className="font-bold text-[15px] text-brand-500">Juz {juz}</h3>
+                        <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+                      </div>
+                      <div className="text-center">
+                        <span className="block font-bold text-gray-700 dark:text-gray-300 text-sm">{surahIds.length}</span>
+                        <span className="text-[10px] text-gray-400">Surah</span>
+                      </div>
+                    </Link>
+                    <button 
+                      onClick={() => setExpandedJuz(expandedJuz === juz ? null : juz)}
+                      className="p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-xl hover:bg-gray-100 dark:hover:bg-[#3A3A3A] transition-colors flex items-center justify-center shrink-0 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                      aria-label="Toggle Surahs"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${expandedJuz === juz ? 'rotate-180' : ''}`}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  </div>
                   
                   {expandedJuz === juz && (
                     <div className="pl-4 pr-1 mt-2 space-y-1">
@@ -142,7 +154,7 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
                         return (
                           <Link 
                             key={surahId}
-                            href={`/juz/${juz}`}
+                            href={`/surah/${surahId}`}
                             onClick={() => onClose()}
                             className={`
                               flex items-center gap-4 p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
