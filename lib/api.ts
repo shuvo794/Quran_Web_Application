@@ -1,0 +1,56 @@
+export interface Ayah {
+  number: number;
+  arabic: string;
+  translation: string;
+  audio: string;
+}
+
+export interface Surah {
+  id: number;
+  nameArabic: string;
+  nameEnglish: string;
+  nameTranslation: string;
+  revelationType: string;
+  numberOfAyahs: number;
+  ayahs?: Ayah[];
+}
+
+export async function getAllSurahs(): Promise<Surah[]> {
+  const res = await fetch('https://api.alquran.cloud/v1/meta');
+  if (!res.ok) throw new Error('Failed to fetch surahs');
+  const data = await res.json();
+  return data.data.surahs.references.map((s: any) => ({
+    id: s.number,
+    nameArabic: s.name,
+    nameEnglish: s.englishName,
+    nameTranslation: s.englishNameTranslation,
+    revelationType: s.revelationType,
+    numberOfAyahs: s.numberOfAyahs,
+  }));
+}
+
+export async function getSurahById(id: number): Promise<Surah> {
+  const res = await fetch(`https://api.alquran.cloud/v1/surah/${id}/editions/quran-uthmani,en.asad`);
+  if (!res.ok) throw new Error(`Failed to fetch surah ${id}`);
+  const data = await res.json();
+  
+  const ar = data.data[0];
+  const en = data.data[1];
+  
+  const ayahs = ar.ayahs.map((ayah: any, index: number) => ({
+    number: ayah.numberInSurah,
+    arabic: ayah.text,
+    translation: en.ayahs[index].text,
+    audio: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`
+  }));
+  
+  return {
+    id: ar.number,
+    nameArabic: ar.name,
+    nameEnglish: ar.englishName,
+    nameTranslation: ar.englishNameTranslation,
+    revelationType: ar.revelationType,
+    numberOfAyahs: ar.numberOfAyahs,
+    ayahs,
+  };
+}

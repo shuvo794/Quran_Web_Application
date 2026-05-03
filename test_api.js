@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// Native fetch used
 
 async function test() {
   const res = await fetch('http://api.alquran.cloud/v1/surah/1/editions/quran-uthmani,en.asad');
