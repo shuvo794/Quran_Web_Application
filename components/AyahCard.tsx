@@ -75,14 +75,21 @@ export default function AyahCard({ ayah, surahId }: Props) {
                 style={{ fontSize: `${arabicFontSize}px` }}
                 dir="rtl"
               >
-                {ayah.words.map((word, idx) => (
+                {ayah.words.map((word, idx) => {
+                  // Build direct CDN URL from surahId:ayahNumber:position
+                  // Format: https://audio.qurancdn.com/wbw/001_001_001.mp3
+                  const wordAudioUrl = word.charTypeName === "word"
+                    ? `https://audio.qurancdn.com/wbw/${String(surahId).padStart(3, '0')}_${String(ayah.number).padStart(3, '0')}_${String(word.position).padStart(3, '0')}.mp3`
+                    : null;
+
+                  return (
                   <span
                     key={word.id || idx}
                     className="relative group cursor-pointer inline-block mx-[0.1em]"
                     onClick={(e) => {
-                      if (word.audioUrl && word.charTypeName === "word") {
+                      if (wordAudioUrl && word.charTypeName === "word") {
                         e.stopPropagation();
-                        playWordAudio(word.audioUrl);
+                        playWordAudio(wordAudioUrl);
                       }
                     }}
                   >
@@ -112,7 +119,8 @@ export default function AyahCard({ ayah, surahId }: Props) {
                       </span>
                     )}
                   </span>
-                ))}
+                  );
+                })}
               </p>
             ) : (
               <p

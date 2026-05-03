@@ -21,6 +21,7 @@ export default function SurahHeader({ surah }: Props) {
             alt={revelationCity}
             fill
             sizes="180px"
+            loading="eager"
             className="object-contain"
           />
         </div>

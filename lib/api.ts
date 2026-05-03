@@ -48,7 +48,8 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
   if (cache.has(cacheKey)) return cache.get(cacheKey);
 
   try {
-    const res = await fetchWithRetry(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation,audio_url&language=bn&per_page=400`, {
+    // Adding audio=7 for Mishary Rashid Al-Afasy which supports word-by-word audio
+    const res = await fetchWithRetry(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation,audio_url&audio=7&language=bn&per_page=400`, {
       next: { revalidate: 86400 } 
     });
     
@@ -62,8 +63,8 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
         position: w.position,
         arabic: w.text_uthmani || w.text,
         translation: w.translation?.text || '',
-        // Ensure the audio URL is absolute and correctly formatted
-        audioUrl: w.audio_url ? (w.audio_url.startsWith('http') ? w.audio_url : `https://audio.quran.com/${w.audio_url}`) : null,
+        // The API provides the full URL when audio=7 is used
+        audioUrl: w.audio_url || null,
         charTypeName: w.char_type_name
       }));
       wordMap.set(v.verse_key, words);

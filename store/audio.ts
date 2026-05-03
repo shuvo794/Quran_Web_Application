@@ -16,8 +16,17 @@ export const useAudioStore = create<AudioState>((set) => ({
   activeAyahNumber: null,
   playAudio: (url, ayahNumber) => set({ currentAudioUrl: url, activeAyahNumber: ayahNumber, isPlaying: true }),
   playWordAudio: (url) => {
-    const audio = new Audio(url);
-    audio.play();
+    try {
+      // Ensure the URL is always absolute - relative paths break in browser
+      const absoluteUrl = url.startsWith('http')
+        ? url
+        : `https://audio.qurancdn.com/${url}`;
+      const audio = new Audio(absoluteUrl);
+      audio.onerror = (e) => console.warn('Word audio unavailable:', absoluteUrl);
+      audio.play().catch(e => console.warn('Word audio play failed:', e));
+    } catch (err) {
+      console.warn('Word audio error:', err);
+    }
   },
   stopAudio: () => set({ currentAudioUrl: null, activeAyahNumber: null, isPlaying: false }),
   setPlaying: (playing) => set({ isPlaying: playing }),
