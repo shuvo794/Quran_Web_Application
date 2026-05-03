@@ -7,8 +7,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PageReader({ params }: { params: { id: string } }) {
-  const page = await getPageById(parseInt(params.id));
+export default async function PageReader({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const page = await getPageById(parseInt(resolvedParams.id));
 
   return (
     <div className="max-w-4xl mx-auto p-6 pb-24">

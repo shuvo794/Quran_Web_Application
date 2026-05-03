@@ -7,8 +7,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function JuzPage({ params }: { params: { id: string } }) {
-  const juz = await getJuzById(parseInt(params.id));
+export default async function JuzPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const juz = await getJuzById(parseInt(resolvedParams.id));
 
   return (
     <div className="max-w-4xl mx-auto p-6 pb-24">
