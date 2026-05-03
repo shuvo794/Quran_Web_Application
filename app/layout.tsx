@@ -37,7 +37,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable} dark`}
+      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable}`}
       suppressHydrationWarning
     >
       <head>

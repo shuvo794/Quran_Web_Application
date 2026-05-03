@@ -15,7 +15,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: 'dark',
+      theme: 'light',
       arabicFont: 'font-amiri',
       arabicFontSize: 32,
       translationFontSize: 16,
