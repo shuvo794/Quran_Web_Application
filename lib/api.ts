@@ -6,6 +6,7 @@ export interface Word {
   position: number;
   arabic: string;
   translation: string;
+  audioUrl?: string | null;
   charTypeName: string;
 }
 
@@ -33,7 +34,7 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
   if (cache.has(cacheKey)) return cache.get(cacheKey);
 
   try {
-    const res = await fetch(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation&language=bn&per_page=400`, {
+    const res = await fetch(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation,audio_url&language=bn&per_page=400`, {
       cache: 'force-cache',
       next: { revalidate: 86400 } // Cache for 24 hours
     });
@@ -47,6 +48,7 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
         position: w.position,
         arabic: w.text_uthmani || w.text,
         translation: w.translation?.text || '',
+        audioUrl: w.audio_url ? `https://audio.quran.com/${w.audio_url}` : null,
         charTypeName: w.char_type_name
       }));
       wordMap.set(v.verse_key, words);

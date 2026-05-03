@@ -12,7 +12,7 @@ interface Props {
 
 export default function AyahCard({ ayah, surahId }: Props) {
   const { arabicFont, arabicFontSize, translationFontSize } = useSettingsStore();
-  const { currentAudioUrl, isPlaying, playAudio, stopAudio } = useAudioStore();
+  const { currentAudioUrl, isPlaying, playAudio, stopAudio, playWordAudio } = useAudioStore();
 
   const audioUrl = ayah.audio;
   const isThisPlaying = currentAudioUrl === audioUrl && isPlaying;
@@ -64,26 +64,34 @@ export default function AyahCard({ ayah, surahId }: Props) {
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-          <div className="mb-14">
+          <div 
+            className="mb-14 cursor-pointer group/ayah"
+            onClick={() => isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)}
+            title="Click to play audio"
+          >
             {ayah.words && ayah.words.length > 0 ? (
               <p
-                className={`${arabicFont} leading-[2.8] text-right text-gray-800 dark:text-gray-100`}
+                className={`${arabicFont} leading-[2.8] text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
                 style={{ fontSize: `${arabicFontSize}px` }}
                 dir="rtl"
               >
                 {ayah.words.map((word, idx) => (
                   <span
                     key={word.id || idx}
-                    className="relative group cursor-pointer hover:text-[#2E7D32] transition-colors inline-block mx-[0.1em]"
+                    className="relative group cursor-pointer inline-block mx-[0.1em]"
+                    onClick={(e) => {
+                      if (word.audioUrl && word.charTypeName === "word") {
+                        e.stopPropagation();
+                        playWordAudio(word.audioUrl);
+                      }
+                    }}
                   >
                     {word.charTypeName === "end" ? (
-                      <span className="relative flex items-center justify-center w-[2.6em] h-[2.6em] mx-2 text-gray-500 select-none group-hover:text-[#2E7D32] transition-all duration-300">
+                      <span className="relative flex items-center justify-center w-[2.6em] h-[2.6em] mx-2 text-gray-500 select-none transition-all duration-300">
                         <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-80" fill="none" stroke="currentColor" strokeWidth="1.2">
-                          {/* More delicate ornate frame path */}
                           <path d="M50 4C55 12 75 14 82 22C86 28 92 35 92 50C92 65 86 72 82 78C75 86 55 88 50 96C45 88 25 86 18 78C14 72 8 65 8 50C8 35 14 28 18 22C25 14 45 12 50 4Z" strokeLinejoin="round" />
                           <circle cx="50" cy="50" r="32" strokeWidth="1" />
                           <circle cx="50" cy="50" r="28" strokeWidth="0.5" opacity="0.5" />
-                          {/* Detailed swirls top/bottom */}
                           <path d="M40 15Q50 20 60 15" strokeWidth="0.8" />
                           <path d="M40 85Q50 80 60 85" strokeWidth="0.8" />
                           <path d="M15 40Q20 50 15 60" strokeWidth="0.8" />
@@ -95,7 +103,7 @@ export default function AyahCard({ ayah, surahId }: Props) {
                         </span>
                       </span>
                     ) : (
-                      <span>{word.arabic}</span>
+                      <span className="hover:text-[#2E7D32] transition-colors">{word.arabic}</span>
                     )}
                     {word.translation && word.charTypeName === "word" && (
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#333333] text-white text-[15px] px-3 py-1.5 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none shadow-lg font-inter tracking-wide font-medium">
@@ -108,7 +116,7 @@ export default function AyahCard({ ayah, surahId }: Props) {
               </p>
             ) : (
               <p
-                className={`${arabicFont} leading-loose text-right text-gray-800 dark:text-gray-100`}
+                className={`${arabicFont} leading-loose text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors`}
                 style={{ fontSize: `${arabicFontSize}px` }}
                 dir="rtl"
               >
