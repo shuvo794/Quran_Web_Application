@@ -22,7 +22,7 @@ export default async function PageReader({ params }: { params: Promise<{ id: str
           
           return (
             <div key={`${page.id}-${i}`}>
-              {isNewSurah && surahInfo && <SurahHeader surah={surahInfo} />}
+              {isNewSurah && surahInfo && <SurahHeader surah={surahInfo} showBismillah={ayah.number === 1} />}
               <AyahCard ayah={ayah} surahId={ayah.surahId!} />
             </div>
           );

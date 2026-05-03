@@ -2,32 +2,36 @@ import { Surah } from '@/lib/api';
 
 interface Props {
   surah: Surah;
+  showBismillah?: boolean;
 }
 
-export default function SurahHeader({ surah }: Props) {
+export default function SurahHeader({ surah, showBismillah = true }: Props) {
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-[#1F1F1F] p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center justify-between mb-8 mt-12 first:mt-0">
+    <div className="relative flex items-center justify-between mb-12 mt-16 first:mt-4 pb-12 border-b border-gray-100 dark:border-gray-800">
       
-      {/* Background faint graphic (simulated with CSS) */}
-      <div className="absolute -left-10 -bottom-10 opacity-5 dark:opacity-10 pointer-events-none">
-        <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C10.89 2 10 2.89 10 4V6H8V8H6V10H4V22H20V10H18V8H16V6H14V4C14 2.89 13.11 2 12 2M12 4C12.55 4 13 4.45 13 5V6H11V5C11 4.45 11.45 4 12 4M10 8H14V10H10V8M8 10H16V12H8V10M6 12H18V20H6V12Z" />
+      {/* Left side Mosque SVG */}
+      <div className="hidden md:flex flex-1 items-center justify-start opacity-20 dark:opacity-40">
+        <svg width="120" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 10 L55 25 H45 Z" fill="currentColor" />
+          <path d="M50 25 C70 25, 80 50, 80 70 H20 C20 50, 30 25, 50 25 Z" fill="currentColor" />
+          <rect x="25" y="70" width="50" height="20" fill="currentColor" />
+          <rect x="10" y="40" width="5" height="50" fill="currentColor" />
+          <rect x="85" y="40" width="5" height="50" fill="currentColor" />
+          <path d="M12.5 30 L15 40 H10 Z" fill="currentColor" />
+          <path d="M87.5 30 L90 40 H85 Z" fill="currentColor" />
         </svg>
       </div>
 
-      {/* Empty div for left balance */}
-      <div className="hidden md:block flex-1"></div>
-
       {/* Center content */}
       <div className="flex-1 text-center relative z-10 shrink-0">
-        <h2 className="text-2xl font-bold text-[var(--foreground)] mb-1">Surah {surah.nameEnglish}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Ayah-{surah.numberOfAyahs}, {surah.revelationType}</p>
+        <h2 className="text-[26px] font-bold text-gray-800 dark:text-gray-100 mb-1">Surah {surah.nameEnglish}</h2>
+        <p className="text-[13px] text-gray-400 font-medium">Ayah-{surah.numberOfAyahs}, {surah.revelationType}</p>
       </div>
 
       {/* Right side Bismillah */}
-      <div className="hidden md:block flex-1 text-right">
-        {surah.id !== 1 && surah.id !== 9 && (
-          <span className="font-amiri text-4xl text-[var(--foreground)] opacity-80" dir="rtl">
+      <div className="hidden md:flex flex-1 items-center justify-end">
+        {showBismillah && surah.id !== 1 && surah.id !== 9 && (
+          <span className="font-amiri text-[40px] text-gray-700 dark:text-gray-300 opacity-90" dir="rtl">
             بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
           </span>
         )}

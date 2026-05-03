@@ -25,7 +25,7 @@ export default async function JuzPage({ params }: { params: Promise<{ id: string
           
           return (
             <div key={`${juz.id}-${i}`}>
-              {isNewSurah && surahInfo && <SurahHeader surah={surahInfo} />}
+              {isNewSurah && surahInfo && <SurahHeader surah={surahInfo} showBismillah={ayah.number === 1} />}
               <AyahCard ayah={ayah} surahId={ayah.surahId!} />
             </div>
           );
