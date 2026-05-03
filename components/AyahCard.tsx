@@ -3,7 +3,7 @@
 import { Ayah } from "@/lib/api";
 import { useSettingsStore } from "@/store/settings";
 import { useAudioStore } from "@/store/audio";
-import { Play, Pause, Copy, Bookmark, MoreHorizontal } from "lucide-react";
+import { Play, Pause, BookOpen, Bookmark, MoreHorizontal } from "lucide-react";
 
 interface Props {
   ayah: Ayah;
@@ -11,8 +11,7 @@ interface Props {
 }
 
 export default function AyahCard({ ayah, surahId }: Props) {
-  const { arabicFont, arabicFontSize, translationFontSize } =
-    useSettingsStore();
+  const { arabicFont, arabicFontSize, translationFontSize } = useSettingsStore();
   const { currentAudioUrl, isPlaying, playAudio, stopAudio } = useAudioStore();
 
   const audioUrl = ayah.audio;
@@ -20,64 +19,80 @@ export default function AyahCard({ ayah, surahId }: Props) {
 
   return (
     <div
-      className={`p-6 mb-4 rounded-xl bg-[var(--surface)] shadow-sm border border-[var(--border)] transition-colors ${isThisPlaying ? "ring-2 ring-brand-500" : ""}`}
+      className={`p-10 mb-10 rounded-2xl bg-[var(--surface)] shadow-[0_10px_40px_-12px_rgba(0,0,0,0.05)] border border-[var(--border)] transition-all duration-300 ${isThisPlaying ? "ring-2 ring-[#2E7D32]" : ""}`}
     >
-      <div className="flex gap-6">
+      <div className="flex gap-12">
         {/* Left Action Column */}
-        <div className="flex flex-col items-center gap-6 shrink-0 pt-2">
-          <div className="text-brand-500 font-semibold text-sm">
+        <div className="flex flex-col items-center gap-8 shrink-0 pt-1">
+          <div className="text-[#2E7D32] font-bold text-2xl tracking-tight">
             {surahId}:{ayah.number}
           </div>
-          <button
-            onClick={() =>
-              isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)
-            }
-            className="text-gray-400 hover:text-brand-500 transition-colors"
-            title="Play Audio"
-          >
-            {isThisPlaying ? (
-              <Pause size={22} fill="currentColor" />
-            ) : (
-              <Play size={22} />
-            )}
-          </button>
-          <button
-            className="text-gray-400 hover:text-brand-500 transition-colors"
-            title="Copy"
-          >
-            <Copy size={20} />
-          </button>
-          <button
-            className="text-gray-400 hover:text-brand-500 transition-colors"
-            title="Bookmark"
-          >
-            <Bookmark size={20} />
-          </button>
-          <button
-            className="text-gray-400 hover:text-brand-500 transition-colors"
-            title="More"
-          >
-            <MoreHorizontal size={20} />
-          </button>
+          <div className="flex flex-col items-center gap-6 mt-4">
+            <button
+              onClick={() =>
+                isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)
+              }
+              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
+              title="Play Audio"
+            >
+              {isThisPlaying ? (
+                <Pause size={28} fill="currentColor" />
+              ) : (
+                <Play size={28} />
+              )}
+            </button>
+            <button
+              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
+              title="Read"
+            >
+              <BookOpen size={24} />
+            </button>
+            <button
+              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
+              title="Bookmark"
+            >
+              <Bookmark size={24} />
+            </button>
+            <button
+              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
+              title="More"
+            >
+              <MoreHorizontal size={24} />
+            </button>
+          </div>
         </div>
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-          <div className="mb-8">
+          <div className="mb-14">
             {ayah.words && ayah.words.length > 0 ? (
               <p
-                className={`${arabicFont} leading-[2.5] text-right text-[var(--foreground)]`}
+                className={`${arabicFont} leading-[2.8] text-right text-gray-800 dark:text-gray-100`}
                 style={{ fontSize: `${arabicFontSize}px` }}
                 dir="rtl"
               >
                 {ayah.words.map((word, idx) => (
                   <span
                     key={word.id || idx}
-                    className="relative group cursor-pointer hover:text-brand-500 transition-colors inline-block mx-[0.15em]"
+                    className="relative group cursor-pointer hover:text-[#2E7D32] transition-colors inline-block mx-[0.1em]"
                   >
                     {word.charTypeName === "end" ? (
-                      <span className="text-brand-500 opacity-80 select-none text-[1.1em] font-normal mx-1">
-                        {word.arabic}&#x06DD;
+                      <span className="relative flex items-center justify-center w-[2.6em] h-[2.6em] mx-2 text-gray-500 select-none group-hover:text-[#2E7D32] transition-all duration-300">
+                        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-80" fill="none" stroke="currentColor" strokeWidth="1.2">
+                          {/* More delicate ornate frame path */}
+                          <path d="M50 4C55 12 75 14 82 22C86 28 92 35 92 50C92 65 86 72 82 78C75 86 55 88 50 96C45 88 25 86 18 78C14 72 8 65 8 50C8 35 14 28 18 22C25 14 45 12 50 4Z" strokeLinejoin="round" />
+                          <circle cx="50" cy="50" r="32" strokeWidth="1" />
+                          <circle cx="50" cy="50" r="28" strokeWidth="0.5" opacity="0.5" />
+                          {/* Detailed swirls top/bottom */}
+                          <path d="M40 15Q50 20 60 15" strokeWidth="0.8" />
+                          <path d="M40 85Q50 80 60 85" strokeWidth="0.8" />
+                          <path d="M15 40Q20 50 15 60" strokeWidth="0.8" />
+                          <path d="M85 40Q80 50 85 60" strokeWidth="0.8" />
+                          <path d="M45 5C50 1 55 5" strokeWidth="1.5" />
+                        </svg>
+                        <span className="relative z-10 font-bold text-[#2E7D32] drop-shadow-sm" style={{ fontSize: '0.45em', transform: 'translateY(5%)' }}>
+                          {word.arabic}
+                        </span>
                       </span>
                     ) : (
                       <span>{word.arabic}</span>
@@ -93,7 +108,7 @@ export default function AyahCard({ ayah, surahId }: Props) {
               </p>
             ) : (
               <p
-                className={`${arabicFont} leading-loose text-right text-[var(--foreground)]`}
+                className={`${arabicFont} leading-loose text-right text-gray-800 dark:text-gray-100`}
                 style={{ fontSize: `${arabicFontSize}px` }}
                 dir="rtl"
               >
@@ -102,12 +117,12 @@ export default function AyahCard({ ayah, surahId }: Props) {
             )}
           </div>
 
-          <div>
-            <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-2 font-semibold">
-              TRANSLATION
+          <div className="mt-10 pt-8 border-t border-gray-50 dark:border-gray-800/30">
+            <p className="text-[11px] text-gray-400 uppercase tracking-[0.15em] mb-4 font-bold">
+              SAHEEH INTERNATIONAL
             </p>
             <p
-              className="text-[var(--foreground)] font-inter leading-relaxed"
+              className="text-gray-700 dark:text-gray-300 font-inter leading-relaxed text-xl font-normal opacity-90"
               style={{ fontSize: `${translationFontSize}px` }}
             >
               {ayah.translation}
