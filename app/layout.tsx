@@ -37,12 +37,10 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable} dark`}
+      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable}`}
     >
       <body className="min-h-screen antialiased bg-[var(--background)] text-[var(--foreground)]">
-        <ClientLayout surahs={surahs}>
-          {children}
-        </ClientLayout>
+        <ClientLayout surahs={surahs}>{children}</ClientLayout>
       </body>
     </html>
   );
