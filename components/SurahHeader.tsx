@@ -3,59 +3,85 @@ import Link from "next/link";
 
 interface Props {
   surah: Surah;
-  showBismillah?: boolean;
 }
 
-export default function SurahHeader({ surah, showBismillah = true }: Props) {
+const MakkahIllustration = () => (
+  <svg
+    width="180"
+    height="120"
+    viewBox="0 0 100 100"
+    fill="currentColor"
+    className="opacity-10 dark:opacity-20 transition-opacity duration-700"
+  >
+    {/* Kaaba Silhouette */}
+    <rect x="35" y="45" width="30" height="30" />
+    <path d="M35 45 L50 35 L65 45 Z" opacity="0.5" />
+    <rect x="42" y="52" width="16" height="4" fillOpacity="0.2" />
+    {/* Minarets */}
+    <path d="M20 75 L23 30 L26 75 Z" />
+    <path d="M74 75 L77 30 L80 75 Z" />
+    <path d="M10 75 L12 45 L14 75 Z" />
+    <path d="M86 75 L88 45 L90 75 Z" />
+    <rect x="5" y="75" width="90" height="5" />
+  </svg>
+);
+
+const MadinahIllustration = () => (
+  <svg
+    width="180"
+    height="120"
+    viewBox="0 0 100 100"
+    fill="currentColor"
+    className="opacity-10 dark:opacity-20 transition-opacity duration-700"
+  >
+    {/* Green Dome */}
+    <path d="M30 75 C30 35, 70 35, 70 75 Z" />
+    <path
+      d="M50 35 L50 25 M48 25 L52 25"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    {/* Minarets */}
+    <path d="M15 75 L18 20 L21 75 Z" />
+    <path d="M79 75 L82 20 L85 75 Z" />
+    <rect x="17" y="40" width="2" height="1" />
+    <rect x="81" y="40" width="2" height="1" />
+    <rect x="5" y="75" width="90" height="5" />
+  </svg>
+);
+
+export default function SurahHeader({ surah }: Props) {
+  const isMeccan = surah.revelationType === "Meccan";
+  const revelationCity = isMeccan ? "Makkah" : "Madinah";
+
   return (
-    <div className="relative flex items-center justify-between mb-12 mt-16 first:mt-4 pb-12 border-b border-gray-100 dark:border-gray-800">
-      {/* Left side Mosque SVG */}
-      <div className="hidden md:flex flex-1 items-center justify-start opacity-20 dark:opacity-40">
-        <svg
-          width="120"
-          height="80"
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M50 10 L55 25 H45 Z" fill="currentColor" />
-          <path
-            d="M50 25 C70 25, 80 50, 80 70 H20 C20 50, 30 25, 50 25 Z"
-            fill="currentColor"
-          />
-          <rect x="25" y="70" width="50" height="20" fill="currentColor" />
-          <rect x="10" y="40" width="5" height="50" fill="currentColor" />
-          <rect x="85" y="40" width="5" height="50" fill="currentColor" />
-          <path d="M12.5 30 L15 40 H10 Z" fill="currentColor" />
-          <path d="M87.5 30 L90 40 H85 Z" fill="currentColor" />
-        </svg>
+    <div className="relative py-14 mb-16 border-b border-gray-100 dark:border-gray-800/40">
+      {/* Left side Illustration Decoration */}
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none hidden md:block">
+        {isMeccan ? <MakkahIllustration /> : <MadinahIllustration />}
       </div>
 
       {/* Center content */}
-      <div className="flex-1 text-center relative z-10 shrink-0">
-        <Link
-          href={`/surah/${surah.id}`}
-          className="inline-block group hover:opacity-80 transition-opacity"
-        >
-          <h2 className="text-[26px] font-bold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-brand-500 transition-colors">
+      <div className="text-center relative z-10">
+        <Link href={`/surah/${surah.id}`} className="group inline-block">
+          <h1 className="text-[34px] font-bold text-gray-800 dark:text-gray-100 mb-3 group-hover:text-[#2E7D32] transition-colors tracking-tight font-inter">
             Surah {surah.nameEnglish}
-          </h2>
+          </h1>
         </Link>
-        <p className="text-[13px] text-gray-400 font-medium block">
-          Ayah-{surah.numberOfAyahs}, {surah.revelationType}
-        </p>
+        <div className="flex items-center justify-center gap-3 text-gray-400 font-semibold text-[13px] tracking-wide uppercase">
+          <span className="bg-gray-50 dark:bg-gray-800/50 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700/50">
+            Ayah-{surah.numberOfAyahs}
+          </span>
+          <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
+          <span className="bg-gray-50 dark:bg-gray-800/50 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-700/50">
+            {revelationCity}
+          </span>
+        </div>
       </div>
 
-      {/* Right side Bismillah */}
-      <div className="hidden md:flex flex-1 items-center justify-end">
-        {showBismillah && surah.id !== 1 && surah.id !== 9 && (
-          <span
-            className="font-amiri text-[40px] text-gray-700 dark:text-gray-300 opacity-90"
-            dir="rtl"
-          >
-            بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-          </span>
-        )}
+      {/* Right side mirror decoration for balance */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none hidden md:block scale-x-[-1]">
+        {isMeccan ? <MakkahIllustration /> : <MadinahIllustration />}
       </div>
     </div>
   );
