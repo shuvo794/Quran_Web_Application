@@ -3,8 +3,7 @@
 import { Ayah } from '@/lib/api';
 import { useSettingsStore } from '@/store/settings';
 import { useAudioStore } from '@/store/audio';
-import { Play, Pause } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { Play, Pause, Copy, Bookmark, MoreHorizontal } from 'lucide-react';
 
 interface Props {
   ayah: Ayah;
@@ -19,40 +18,59 @@ export default function AyahCard({ ayah, surahId }: Props) {
   const isThisPlaying = currentAudioUrl === audioUrl && isPlaying;
 
   return (
-    <div className={`p-6 border-b border-[var(--border)] hover:bg-[var(--surface)]/50 transition-colors ${isThisPlaying ? 'bg-brand-500/10' : ''}`}>
-      <div className="flex justify-between items-start mb-6 gap-6">
-        <div className="flex items-center gap-4 shrink-0">
-          <div className="w-12 h-12 rounded-full border-2 border-brand-500 text-brand-500 flex items-center justify-center font-bold text-lg bg-[var(--surface)]">
-            {ayah.number}
+    <div className={`p-6 mb-4 rounded-xl bg-[var(--surface)] shadow-sm border border-[var(--border)] transition-colors ${isThisPlaying ? 'ring-2 ring-brand-500' : ''}`}>
+      <div className="flex gap-6">
+        
+        {/* Left Action Column */}
+        <div className="flex flex-col items-center gap-6 shrink-0 pt-2">
+          <div className="text-brand-500 font-semibold text-sm">
+            {surahId}:{ayah.number}
           </div>
           <button 
             onClick={() => isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)}
-            className="w-10 h-10 rounded-full bg-brand-500 text-white flex items-center justify-center hover:bg-brand-600 transition-colors shadow-lg"
+            className="text-gray-400 hover:text-brand-500 transition-colors"
             title="Play Audio"
           >
-            {isThisPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-1" />}
+            {isThisPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} />}
+          </button>
+          <button className="text-gray-400 hover:text-brand-500 transition-colors" title="Copy">
+            <Copy size={20} />
+          </button>
+          <button className="text-gray-400 hover:text-brand-500 transition-colors" title="Bookmark">
+            <Bookmark size={20} />
+          </button>
+          <button className="text-gray-400 hover:text-brand-500 transition-colors" title="More">
+            <MoreHorizontal size={20} />
           </button>
         </div>
         
-        <div className="flex-1 text-right">
-          <p 
-            className={`${arabicFont} leading-relaxed text-right`} 
-            style={{ fontSize: `${arabicFontSize}px`, lineHeight: 2 }}
-            dir="rtl"
-          >
-            {ayah.arabic}
-          </p>
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
+          <div className="mb-8">
+            <p 
+              className={`${arabicFont} leading-loose text-right text-[var(--foreground)]`} 
+              style={{ fontSize: `${arabicFontSize}px` }}
+              dir="rtl"
+            >
+              {ayah.arabic}
+            </p>
+          </div>
+          
+          <div>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-2 font-semibold">
+              TRANSLATION
+            </p>
+            <p 
+              className="text-[var(--foreground)] font-inter leading-relaxed" 
+              style={{ fontSize: `${translationFontSize}px` }}
+            >
+              {ayah.translation}
+            </p>
+          </div>
         </div>
-      </div>
-      
-      <div className="mt-6 border-t border-[var(--border)] pt-4">
-        <p 
-          className="text-gray-300 font-inter leading-relaxed" 
-          style={{ fontSize: `${translationFontSize}px` }}
-        >
-          {ayah.translation}
-        </p>
+        
       </div>
     </div>
   );
 }
+

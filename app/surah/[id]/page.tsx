@@ -37,17 +37,17 @@ export default async function SurahPage({ params }: Props) {
   // Actually it's fine, we will display it as it comes.
 
   return (
-    <div className="max-w-4xl mx-auto pb-24">
-      <div className="bg-[var(--surface)] p-8 border-b border-[var(--border)] text-center sticky top-0 lg:top-0 z-10 shadow-sm backdrop-blur-md bg-[var(--surface)]/90">
+    <div className="max-w-4xl mx-auto p-6 pb-24">
+      <div className="bg-white dark:bg-[#1F1F1F] p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 text-center mb-6">
         <h1 className="text-4xl font-amiri font-bold text-[var(--foreground)] mb-2" dir="rtl">{surah.nameArabic}</h1>
         <h2 className="text-xl font-bold text-[var(--foreground)]">{surah.nameEnglish}</h2>
-        <div className="mt-4 flex items-center justify-center gap-4 text-sm text-gray-400 font-medium">
-          <span className="px-3 py-1 rounded-full bg-[var(--background)] border border-[var(--border)]">{surah.revelationType}</span>
-          <span className="px-3 py-1 rounded-full bg-[var(--background)] border border-[var(--border)]">{surah.numberOfAyahs} Ayahs</span>
+        <div className="mt-4 flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-medium">
+          <span className="px-4 py-1.5 rounded-full bg-gray-100 dark:bg-[#2A2A2A]">{surah.revelationType}</span>
+          <span className="px-4 py-1.5 rounded-full bg-gray-100 dark:bg-[#2A2A2A]">{surah.numberOfAyahs} Ayahs</span>
         </div>
       </div>
       
-      <div className="bg-[var(--background)]">
+      <div>
         {surah.ayahs.map((ayah) => (
           <AyahCard key={ayah.number} ayah={ayah} surahId={surah.id} />
         ))}
