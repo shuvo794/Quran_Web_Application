@@ -3,7 +3,6 @@ import { Inter, Amiri, Scheherazade_New } from "next/font/google";
 import "./globals.css";
 import { getAllSurahs } from "@/lib/api";
 import ClientLayout from "@/components/ClientLayout";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,13 +37,30 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable}`}
+      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable} dark`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const stored = localStorage.getItem('quran-settings');
+                if (stored) {
+                  const state = JSON.parse(stored).state;
+                  if (state.theme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  } else {
+                    document.documentElement.classList.add('dark');
+                  }
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen antialiased bg-[var(--background)] text-[var(--foreground)]">
-        <ThemeProvider>
-          <ClientLayout surahs={surahs}>{children}</ClientLayout>
-        </ThemeProvider>
+        <ClientLayout surahs={surahs}>{children}</ClientLayout>
       </body>
     </html>
   );

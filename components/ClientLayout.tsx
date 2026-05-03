@@ -6,7 +6,7 @@ import SurahListSidebar from './SurahListSidebar';
 import SettingsPanel from './SettingsPanel';
 import AudioPlayer from './AudioPlayer';
 import { Surah } from '@/lib/api';
-import { Menu } from 'lucide-react';
+import { Menu, Search, Settings } from 'lucide-react';
 
 interface Props {
   children: React.ReactNode;

@@ -1,8 +1,7 @@
 'use client';
 
 import { useSettingsStore } from '@/store/settings';
-import { X, Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { Sun, Moon, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -11,8 +10,17 @@ interface Props {
 }
 
 export default function SettingsPanel({ isOpen, onClose }: Props) {
-  const { arabicFont, arabicFontSize, translationFontSize, setArabicFont, setArabicFontSize, setTranslationFontSize } = useSettingsStore();
-  const { theme, setTheme } = useTheme();
+  const { 
+    theme, 
+    setTheme, 
+    arabicFont, 
+    setArabicFont, 
+    arabicFontSize, 
+    setArabicFontSize,
+    translationFontSize,
+    setTranslationFontSize
+  } = useSettingsStore();
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,36 +31,41 @@ export default function SettingsPanel({ isOpen, onClose }: Props) {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
-      <div className="fixed right-0 top-0 h-screen w-80 bg-[var(--surface)] border-l border-[var(--border)] z-50 p-6 flex flex-col shadow-2xl animate-in slide-in-from-right">
-        <div className="flex justify-between items-center mb-8 border-b border-[var(--border)] pb-4">
-          <h2 className="text-xl font-bold">Settings</h2>
-          <button onClick={onClose} className="p-2 hover:bg-[var(--border)] rounded-full transition-colors">
+      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+      
+      <div className="fixed right-0 top-0 h-full w-[380px] bg-[var(--surface)] shadow-2xl z-50 overflow-y-auto transform transition-transform duration-300">
+        <div className="p-6 border-b border-[var(--border)] flex justify-between items-center sticky top-0 bg-[var(--surface)]/90 backdrop-blur-sm z-10">
+          <h2 className="text-xl font-bold text-[var(--foreground)]">Settings</h2>
+          <button onClick={onClose} className="p-2 text-gray-500 hover:text-[var(--foreground)] hover:bg-[var(--border)] rounded-full transition-colors">
             <X size={20} />
           </button>
         </div>
 
-        <div className="space-y-8 flex-1 overflow-y-auto pr-2">
-          {/* Theme Select */}
-          {mounted && (
-            <div>
-              <label className="block text-sm font-semibold mb-3 text-gray-500 dark:text-gray-300">Theme</label>
-              <div className="flex gap-2 p-1 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                <button
+        <div className="p-6 space-y-10">
+          
+          {/* Appearance Section */}
+          <section>
+            <h3 className="text-sm font-bold uppercase text-gray-400 tracking-wider mb-4 flex items-center gap-2">
+              <Sun size={16} /> Appearance
+            </h3>
+            
+            {mounted && (
+              <div className="flex bg-[var(--border)] rounded-xl p-1 relative shadow-inner">
+                <button 
                   onClick={() => setTheme('light')}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${theme === 'light' ? 'bg-[var(--surface)] shadow shadow-sm text-brand-500' : 'text-gray-500'}`}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 z-10 flex items-center justify-center gap-2 ${theme === 'light' ? 'text-gray-900 bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  <Sun size={18} /> Light
+                  <Sun size={16} /> Light
                 </button>
-                <button
+                <button 
                   onClick={() => setTheme('dark')}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${theme === 'dark' ? 'bg-[var(--surface)] shadow shadow-sm text-brand-500' : 'text-gray-500'}`}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 z-10 flex items-center justify-center gap-2 ${theme === 'dark' ? 'text-white bg-[#2A2A2A] shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
                 >
-                  <Moon size={18} /> Dark
+                  <Moon size={16} /> Dark
                 </button>
               </div>
-            </div>
-          )}
+            )}
+          </section>
 
           {/* Arabic Font Select */}
           <div>
