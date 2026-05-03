@@ -11,9 +11,9 @@ export default function Sidebar({ onOpenSettings }: { onOpenSettings?: () => voi
         <Link href="/surah/1" className="p-3 rounded-xl hover:bg-[var(--border)] transition-colors text-brand-500" title="Read Quran">
           <BookOpen size={24} />
         </Link>
-        <button className="p-3 rounded-xl hover:bg-[var(--border)] transition-colors text-[var(--foreground)]" title="Search">
+        <Link href="/search" className="p-3 rounded-xl hover:bg-[var(--border)] transition-colors text-[var(--foreground)]" title="Search">
           <Search size={24} />
-        </button>
+        </Link>
       </div>
       <div className="mt-auto">
         <button 
