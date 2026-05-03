@@ -33,8 +33,9 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
   if (cache.has(cacheKey)) return cache.get(cacheKey);
 
   try {
-    const res = await fetch(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation&language=bn&per_page=300`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+    const res = await fetch(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation&language=bn&per_page=400`, {
+      cache: 'force-cache',
+      next: { revalidate: 86400 } // Cache for 24 hours
     });
     if (!res.ok) return null;
     const data = await res.json();
@@ -62,22 +63,28 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
 export async function getAllSurahs(): Promise<Surah[]> {
   if (cache.has('allSurahs')) return cache.get('allSurahs');
 
-  const res = await fetch('https://api.alquran.cloud/v1/meta', {
-    next: { revalidate: 86400 } // Cache for 24 hours
-  });
-  if (!res.ok) throw new Error('Failed to fetch surahs');
-  const data = await res.json();
-  const surahs = data.data.surahs.references.map((s: any) => ({
-    id: s.number,
-    nameArabic: s.name,
-    nameEnglish: s.englishName,
-    nameTranslation: s.englishNameTranslation,
-    revelationType: s.revelationType,
-    numberOfAyahs: s.numberOfAyahs,
-  }));
-  
-  cache.set('allSurahs', surahs);
-  return surahs;
+  try {
+    const res = await fetch('https://api.alquran.cloud/v1/meta', {
+      cache: 'force-cache',
+      next: { revalidate: 86400 }
+    });
+    if (!res.ok) throw new Error('Failed to fetch surahs');
+    const data = await res.json();
+    const surahs = data.data.surahs.references.map((s: any) => ({
+      id: s.number,
+      nameArabic: s.name,
+      nameEnglish: s.englishName,
+      nameTranslation: s.englishNameTranslation,
+      revelationType: s.revelationType,
+      numberOfAyahs: s.numberOfAyahs,
+    }));
+    
+    cache.set('allSurahs', surahs);
+    return surahs;
+  } catch (error) {
+    console.error('Error fetching surahs:', error);
+    return [];
+  }
 }
 
 export async function getSurahById(id: number): Promise<Surah> {
@@ -86,7 +93,8 @@ export async function getSurahById(id: number): Promise<Surah> {
 
   const [res, wordsMap] = await Promise.all([
     fetch(`https://api.alquran.cloud/v1/surah/${id}/editions/quran-uthmani,en.asad`, {
-      next: { revalidate: 3600 }
+      cache: 'force-cache',
+      next: { revalidate: 86400 }
     }).then(r => {
       if (!r.ok) throw new Error(`Failed to fetch surah ${id}`);
       return r.json();
@@ -130,8 +138,8 @@ export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[
   if (cache.has(cacheKey)) return cache.get(cacheKey);
 
   const [arRes, enRes, wordsMap] = await Promise.all([
-    fetch(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`, { next: { revalidate: 3600 } }),
-    fetch(`https://api.alquran.cloud/v1/juz/${id}/en.asad`, { next: { revalidate: 3600 } }),
+    fetch(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`, { cache: 'force-cache', next: { revalidate: 86400 } }),
+    fetch(`https://api.alquran.cloud/v1/juz/${id}/en.asad`, { cache: 'force-cache', next: { revalidate: 86400 } }),
     fetchWordsData('juz', id)
   ]);
   
@@ -171,8 +179,8 @@ export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah
   if (cache.has(cacheKey)) return cache.get(cacheKey);
 
   const [arRes, enRes, wordsMap] = await Promise.all([
-    fetch(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`, { next: { revalidate: 3600 } }),
-    fetch(`https://api.alquran.cloud/v1/page/${id}/en.asad`, { next: { revalidate: 3600 } }),
+    fetch(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`, { cache: 'force-cache', next: { revalidate: 86400 } }),
+    fetch(`https://api.alquran.cloud/v1/page/${id}/en.asad`, { cache: 'force-cache', next: { revalidate: 86400 } }),
     fetchWordsData('page', id)
   ]);
   
@@ -206,5 +214,6 @@ export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah
   cache.set(cacheKey, result);
   return result;
 }
+
 
 
