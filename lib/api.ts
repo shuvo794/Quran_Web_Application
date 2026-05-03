@@ -3,6 +3,7 @@ export interface Ayah {
   arabic: string;
   translation: string;
   audio: string;
+  surahId?: number;
 }
 
 export interface Surah {
@@ -41,7 +42,8 @@ export async function getSurahById(id: number): Promise<Surah> {
     number: ayah.numberInSurah,
     arabic: ayah.text,
     translation: en.ayahs[index].text,
-    audio: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`
+    audio: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`,
+    surahId: ayah.surah ? ayah.surah.number : id
   }));
   
   return {
@@ -54,3 +56,48 @@ export async function getSurahById(id: number): Promise<Surah> {
     ayahs,
   };
 }
+
+export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[] }> {
+  const res = await fetch(`https://api.alquran.cloud/v1/juz/${id}/editions/quran-uthmani,en.asad`);
+  if (!res.ok) throw new Error(`Failed to fetch juz ${id}`);
+  const data = await res.json();
+  
+  const ar = data.data[0];
+  const en = data.data[1];
+  
+  const ayahs = ar.ayahs.map((ayah: any, index: number) => ({
+    number: ayah.numberInSurah,
+    arabic: ayah.text,
+    translation: en.ayahs[index].text,
+    audio: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`,
+    surahId: ayah.surah.number
+  }));
+  
+  return {
+    id: ar.number,
+    ayahs,
+  };
+}
+
+export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah[] }> {
+  const res = await fetch(`https://api.alquran.cloud/v1/page/${id}/editions/quran-uthmani,en.asad`);
+  if (!res.ok) throw new Error(`Failed to fetch page ${id}`);
+  const data = await res.json();
+  
+  const ar = data.data[0];
+  const en = data.data[1];
+  
+  const ayahs = ar.ayahs.map((ayah: any, index: number) => ({
+    number: ayah.numberInSurah,
+    arabic: ayah.text,
+    translation: en.ayahs[index].text,
+    audio: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`,
+    surahId: ayah.surah.number
+  }));
+  
+  return {
+    id: ar.number,
+    ayahs,
+  };
+}
+

@@ -15,6 +15,7 @@ interface Props {
 export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
   const pathname = usePathname();
   const [search, setSearch] = useState('');
+  const [activeTab, setActiveTab] = useState<'surah' | 'juz' | 'page'>('surah');
 
   const filteredSurahs = surahs.filter(s => 
     s.nameEnglish.toLowerCase().includes(search.toLowerCase()) || 
@@ -40,9 +41,24 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
         <div className="p-4 border-b border-[var(--border)] shrink-0 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#2A2A2A] p-1 rounded-lg w-full">
-              <button className="flex-1 py-1.5 px-3 rounded-md bg-white dark:bg-[#3A3A3A] shadow-sm text-sm font-semibold text-center">Surah</button>
-              <button className="flex-1 py-1.5 px-3 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm font-medium text-center">Juz</button>
-              <button className="flex-1 py-1.5 px-3 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm font-medium text-center">Page</button>
+              <button 
+                onClick={() => setActiveTab('surah')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-semibold text-center transition-all ${activeTab === 'surah' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+              >
+                Surah
+              </button>
+              <button 
+                onClick={() => setActiveTab('juz')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-semibold text-center transition-all ${activeTab === 'juz' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+              >
+                Juz
+              </button>
+              <button 
+                onClick={() => setActiveTab('page')}
+                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-semibold text-center transition-all ${activeTab === 'page' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+              >
+                Page
+              </button>
             </div>
             <button className="lg:hidden p-2 ml-2 text-gray-500" onClick={onClose}>✕</button>
           </div>
@@ -51,7 +67,7 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input 
               type="text" 
-              placeholder="Search by Surah Name" 
+              placeholder={`Search by ${activeTab === 'surah' ? 'Surah Name' : activeTab === 'juz' ? 'Juz Number' : 'Page Number'}`} 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-gray-50 dark:bg-[#2A2A2A] border border-transparent focus:border-brand-500 focus:bg-[var(--surface)] focus:outline-none rounded-lg py-2 pl-10 pr-4 text-sm text-[var(--foreground)] transition-colors"
@@ -60,7 +76,7 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
         </div>
         
         <div className="overflow-y-auto flex-1 scrollbar-thin p-3 space-y-1">
-          {filteredSurahs.map((surah) => {
+          {activeTab === 'surah' && filteredSurahs.map((surah) => {
             const isActive = pathname === `/surah/${surah.id}`;
             return (
               <Link 
@@ -90,6 +106,62 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
               </Link>
             );
           })}
+
+          {activeTab === 'juz' && Array.from({ length: 30 }, (_, i) => i + 1)
+            .filter(j => search === '' || j.toString().includes(search))
+            .map((juz) => {
+              const isActive = pathname === `/juz/${juz}`;
+              return (
+                <Link 
+                  key={juz} 
+                  href={`/juz/${juz}`}
+                  onClick={() => onClose()}
+                  className={`
+                    flex items-center p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
+                    ${isActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
+                  `}
+                >
+                  {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500 rounded-r-md"></div>}
+                  <div className="flex items-center gap-4 pl-1 w-full">
+                    <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
+                      <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
+                      <span className="relative z-10 text-xs font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{juz}</span>
+                    </div>
+                    <div className="flex-1 flex justify-between items-center">
+                      <h3 className="font-semibold text-[15px] text-[var(--foreground)]">Juz {juz}</h3>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+
+          {activeTab === 'page' && Array.from({ length: 604 }, (_, i) => i + 1)
+            .filter(p => search === '' || p.toString().includes(search))
+            .map((page) => {
+              const isActive = pathname === `/page/${page}`;
+              return (
+                <Link 
+                  key={page} 
+                  href={`/page/${page}`}
+                  onClick={() => onClose()}
+                  className={`
+                    flex items-center p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
+                    ${isActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
+                  `}
+                >
+                  {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500 rounded-r-md"></div>}
+                  <div className="flex items-center gap-4 pl-1 w-full">
+                    <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
+                      <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
+                      <span className="relative z-10 text-xs font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{page}</span>
+                    </div>
+                    <div className="flex-1 flex justify-between items-center">
+                      <h3 className="font-semibold text-[15px] text-[var(--foreground)]">Page {page}</h3>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
       </div>
     </>
