@@ -58,12 +58,18 @@ export async function getSurahById(id: number): Promise<Surah> {
 }
 
 export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[] }> {
-  const res = await fetch(`https://api.alquran.cloud/v1/juz/${id}/editions/quran-uthmani,en.asad`);
-  if (!res.ok) throw new Error(`Failed to fetch juz ${id}`);
-  const data = await res.json();
+  const [arRes, enRes] = await Promise.all([
+    fetch(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`),
+    fetch(`https://api.alquran.cloud/v1/juz/${id}/en.asad`)
+  ]);
   
-  const ar = data.data[0];
-  const en = data.data[1];
+  if (!arRes.ok || !enRes.ok) throw new Error(`Failed to fetch juz ${id}`);
+  
+  const arData = await arRes.json();
+  const enData = await enRes.json();
+  
+  const ar = arData.data;
+  const en = enData.data;
   
   const ayahs = ar.ayahs.map((ayah: any, index: number) => ({
     number: ayah.numberInSurah,
@@ -80,12 +86,18 @@ export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[
 }
 
 export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah[] }> {
-  const res = await fetch(`https://api.alquran.cloud/v1/page/${id}/editions/quran-uthmani,en.asad`);
-  if (!res.ok) throw new Error(`Failed to fetch page ${id}`);
-  const data = await res.json();
+  const [arRes, enRes] = await Promise.all([
+    fetch(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`),
+    fetch(`https://api.alquran.cloud/v1/page/${id}/en.asad`)
+  ]);
   
-  const ar = data.data[0];
-  const en = data.data[1];
+  if (!arRes.ok || !enRes.ok) throw new Error(`Failed to fetch page ${id}`);
+  
+  const arData = await arRes.json();
+  const enData = await enRes.json();
+  
+  const ar = arData.data;
+  const en = enData.data;
   
   const ayahs = ar.ayahs.map((ayah: any, index: number) => ({
     number: ayah.numberInSurah,
