@@ -6,6 +6,8 @@ import { Surah } from '@/lib/api';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
 
+const JUZ_SURAH_MAPPING = [[1,2],[2],[2,3],[3,4],[4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10,11],[11,12],[12,13,14,15],[15,16,17],[17,18],[18,19,20,21],[21,22,23],[23,24,25],[25,26,27],[27,28,29],[29,30,31,32,33],[33,34,35,36],[36,37,38,39],[39,40,41],[41,42,43,44,45,46],[46,47,48,49,50,51],[51,52,53,54,55,56,57,58],[58,59,60,61,62,63,64,65,66,67],[67,68,69,70,71,72,73,74,75,76,77,78],[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]];
+
 interface Props {
   surahs: Surah[];
   isOpen: boolean;
@@ -16,6 +18,7 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
   const pathname = usePathname();
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState<'surah' | 'juz' | 'page'>('surah');
+  const [expandedJuz, setExpandedJuz] = useState<number | null>(null);
 
   const filteredSurahs = surahs.filter(s => 
     s.nameEnglish.toLowerCase().includes(search.toLowerCase()) || 
@@ -110,28 +113,56 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
           {activeTab === 'juz' && Array.from({ length: 30 }, (_, i) => i + 1)
             .filter(j => search === '' || j.toString().includes(search))
             .map((juz) => {
-              const isActive = pathname === `/juz/${juz}`;
+              const surahIds = JUZ_SURAH_MAPPING[juz - 1];
+              const firstSurah = surahs.find(s => s.id === surahIds[0]);
+              const subtitle = firstSurah ? `${firstSurah.nameEnglish}${surahIds.length > 1 ? ' & More' : ''}` : '';
+              
               return (
-                <Link 
-                  key={juz} 
-                  href={`/juz/${juz}`}
-                  onClick={() => onClose()}
-                  className={`
-                    flex items-center p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
-                    ${isActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
-                  `}
-                >
-                  {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500 rounded-r-md"></div>}
-                  <div className="flex items-center gap-4 pl-1 w-full">
-                    <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
-                      <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
-                      <span className="relative z-10 text-xs font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{juz}</span>
+                <div key={juz} className="mb-2">
+                  <button 
+                    onClick={() => setExpandedJuz(expandedJuz === juz ? null : juz)}
+                    className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-xl hover:shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all text-left"
+                  >
+                    <div>
+                      <h3 className="font-bold text-[15px] text-brand-500">Juz {juz}</h3>
+                      <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
                     </div>
-                    <div className="flex-1 flex justify-between items-center">
-                      <h3 className="font-semibold text-[15px] text-[var(--foreground)]">Juz {juz}</h3>
+                    <div className="text-center">
+                      <span className="block font-bold text-gray-700 dark:text-gray-300 text-sm">{surahIds.length}</span>
+                      <span className="text-[10px] text-gray-400">Surah</span>
                     </div>
-                  </div>
-                </Link>
+                  </button>
+                  
+                  {expandedJuz === juz && (
+                    <div className="pl-4 pr-1 mt-2 space-y-1">
+                      {surahIds.map(surahId => {
+                        const surah = surahs.find(s => s.id === surahId);
+                        if (!surah) return null;
+                        const isSurahActive = pathname === `/juz/${juz}` || pathname === `/surah/${surahId}`;
+                        return (
+                          <Link 
+                            key={surahId}
+                            href={`/juz/${juz}`}
+                            onClick={() => onClose()}
+                            className={`
+                              flex items-center gap-4 p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
+                              ${isSurahActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
+                            `}
+                          >
+                            <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
+                              <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
+                              <span className="relative z-10 text-[10px] font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{surahId}</span>
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-sm text-[var(--foreground)]">{surah.nameEnglish}</h3>
+                              <p className="text-[10px] text-gray-500">{surah.nameTranslation}</p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
 
