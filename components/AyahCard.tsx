@@ -21,13 +21,13 @@ export default function AyahCard({ ayah, surahId }: Props) {
     <div
       className={`p-10 mb-10 rounded-2xl bg-[var(--surface)] shadow-[0_10px_40px_-12px_rgba(0,0,0,0.05)] border border-[var(--border)] transition-all duration-300 ${isThisPlaying ? "ring-2 ring-[#2E7D32]" : ""}`}
     >
-      <div className="flex gap-12">
+      <div className="flex gap-6 md:gap-12">
         {/* Left Action Column */}
-        <div className="flex flex-col items-center gap-8 shrink-0 pt-1">
-          <div className="text-[#2E7D32] font-bold text-2xl tracking-tight">
+        <div className="flex flex-col items-center gap-6 md:gap-8 shrink-0 pt-1">
+          <div className="text-[#2E7D32] font-bold text-xl md:text-2xl tracking-tight">
             {surahId}:{ayah.number}
           </div>
-          <div className="flex flex-col items-center gap-6 mt-4">
+          <div className="flex flex-col items-center gap-5 md:gap-6 mt-2 md:mt-4">
             <button
               onClick={() =>
                 isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)
@@ -36,28 +36,28 @@ export default function AyahCard({ ayah, surahId }: Props) {
               title="Play Audio"
             >
               {isThisPlaying ? (
-                <Pause size={28} fill="currentColor" />
+                <Pause size={24} className="md:w-[28px] md:h-[28px]" fill="currentColor" />
               ) : (
-                <Play size={28} />
+                <Play size={24} className="md:w-[28px] md:h-[28px]" />
               )}
             </button>
             <button
               className="text-gray-300 hover:text-[#2E7D32] transition-colors"
               title="Read"
             >
-              <BookOpen size={24} />
+              <BookOpen size={22} className="md:w-[24px] md:h-[24px]" />
             </button>
             <button
               className="text-gray-300 hover:text-[#2E7D32] transition-colors"
               title="Bookmark"
             >
-              <Bookmark size={24} />
+              <Bookmark size={22} className="md:w-[24px] md:h-[24px]" />
             </button>
             <button
               className="text-gray-300 hover:text-[#2E7D32] transition-colors"
               title="More"
             >
-              <MoreHorizontal size={24} />
+              <MoreHorizontal size={22} className="md:w-[24px] md:h-[24px]" />
             </button>
           </div>
         </div>
@@ -65,13 +65,13 @@ export default function AyahCard({ ayah, surahId }: Props) {
         {/* Main Content */}
         <div className="flex-1 min-w-0">
           <div 
-            className="mb-14 cursor-pointer group/ayah"
+            className="mb-8 md:mb-14 cursor-pointer group/ayah"
             onClick={() => isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)}
             title="Click to play audio"
           >
             {ayah.words && ayah.words.length > 0 ? (
               <p
-                className={`${arabicFont} leading-[2.8] text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
+                className={`${arabicFont} leading-[2.5] md:leading-[2.8] text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
                 style={{ fontSize: `${arabicFontSize}px` }}
                 dir="rtl"
               >

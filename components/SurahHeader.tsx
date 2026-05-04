@@ -10,18 +10,18 @@ interface Props {
 export default function SurahHeader({ surah, showBismillah }: Props) {
   const isMeccan = surah.revelationType?.toLowerCase() === "meccan";
   const revelationCity = isMeccan ? "Makkah" : "Madinah";
-  const illustrationSrc = isMeccan ? "/assets/images/makkah.png" : "/assets/images/madinah.png";
+  const illustrationSrc = isMeccan ? "/Makkah.jpeg" : "/Madinah.jpeg";
 
   return (
     <div className="relative flex items-center py-10 mb-16 border-b border-gray-100 dark:border-gray-800/40">
       {/* Left side Illustration */}
       <div className="absolute left-0 pointer-events-none">
-        <div className="relative w-[140px] md:w-[220px] h-[100px] md:h-[140px] opacity-15 dark:opacity-30 grayscale contrast-125">
+        <div className="relative w-[140px] md:w-[180px] h-[100px] md:h-[120px] opacity-40 dark:opacity-60 transition-opacity">
           <Image 
             src={illustrationSrc} 
             alt={revelationCity}
             fill
-            sizes="(max-width: 768px) 140px, 220px"
+            sizes="(max-width: 768px) 140px, 180px"
             loading="eager"
             className="object-contain"
           />
