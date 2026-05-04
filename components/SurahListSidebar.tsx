@@ -98,7 +98,12 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
                     <span className="relative z-10 text-xs font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{surah.id}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[15px] text-[var(--foreground)]">{surah.nameEnglish}</h3>
+                    <h3 className="font-semibold text-[15px] text-[var(--foreground)] flex items-center gap-2">
+                      {surah.nameEnglish}
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold transition-colors ${surah.revelationType?.toLowerCase() === 'meccan' ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400' : 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400'}`}>
+                        {surah.revelationType?.toLowerCase() === 'meccan' ? 'Makkah' : 'Madinah'}
+                      </span>
+                    </h3>
                     <p className="text-[11px] text-gray-500 font-medium">{surah.nameTranslation}</p>
                   </div>
                 </div>
