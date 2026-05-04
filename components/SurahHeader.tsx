@@ -10,38 +10,28 @@ interface Props {
 export default function SurahHeader({ surah, showBismillah }: Props) {
   const isMeccan = surah.revelationType?.toLowerCase() === "meccan";
   const revelationCity = isMeccan ? "Makkah" : "Madinah";
-  const illustrationSrc = isMeccan ? "/Makkah.jpeg" : "/Madinah.jpeg";
 
   return (
-    <div className="relative flex items-center py-10 mb-16 border-b border-gray-100 dark:border-gray-800/40">
-      {/* Left side Illustration */}
-      <div className="absolute left-0 pointer-events-none">
-        <div className="relative w-[140px] md:w-[180px] h-[100px] md:h-[120px] opacity-40 dark:opacity-60 transition-opacity">
-          <Image 
-            src={illustrationSrc} 
-            alt={revelationCity}
-            fill
-            sizes="(max-width: 768px) 140px, 180px"
-            loading="eager"
-            className="object-contain"
-          />
-        </div>
+    <div className="relative flex flex-col items-center py-12 mb-12 border-b border-gray-100 dark:border-gray-800/40 text-center">
+      <Link href={`/surah/${surah.id}`} className="group mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">
+          Surah {surah.nameEnglish}
+        </h1>
+      </Link>
+      
+      <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 font-medium text-sm mb-8">
+        <span>Ayah-{surah.numberOfAyahs}</span>
+        <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
+        <span>{revelationCity}</span>
       </div>
 
-      {/* Center content */}
-      <div className="flex-1 text-center relative z-10 shrink-0">
-        <Link href={`/surah/${surah.id}`} className="group inline-block">
-          <h1 className="text-[32px] md:text-[36px] font-bold text-gray-800 dark:text-gray-100 mb-2 transition-colors tracking-tight font-inter">
-            Surah {surah.nameEnglish}
-          </h1>
-        </Link>
-        <div className="flex items-center justify-center gap-2 text-gray-500 dark:text-gray-400 font-medium text-[15px] tracking-tight">
-          <span>Ayah-{surah.numberOfAyahs}, {revelationCity}</span>
+      {showBismillah && surah.id !== 1 && surah.id !== 9 && (
+        <div className="mt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <p className="font-amiri text-4xl md:text-5xl text-gray-800 dark:text-gray-200 opacity-90">
+            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+          </p>
         </div>
-      </div>
-
-      {/* Spacer for symmetry on mobile, or could be right empty space */}
-      <div className="hidden md:block w-[220px]"></div>
+      )}
     </div>
   );
 }

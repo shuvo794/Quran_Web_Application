@@ -27,132 +27,110 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
 
   return (
     <div
-      className={`p-10 mb-10 rounded-2xl bg-[var(--surface)] shadow-[0_10px_40px_-12px_rgba(0,0,0,0.05)] border border-[var(--border)] transition-all duration-300 ${isThisPlaying ? "ring-2 ring-[#2E7D32]" : ""}`}
+      className={`p-6 md:p-10 mb-6 md:mb-10 rounded-2xl bg-[var(--surface)] shadow-[0_4px_20px_-12px_rgba(0,0,0,0.05)] border border-[var(--border)] transition-all duration-300 ${isThisPlaying ? "ring-2 ring-[#2E7D32]" : ""}`}
     >
-      <div className="flex gap-6 md:gap-12">
-        {/* Left Action Column */}
-        <div className="flex flex-col items-center gap-6 md:gap-8 shrink-0 pt-1">
-          <div className="text-[#2E7D32] font-bold text-xl md:text-2xl tracking-tight">
-            {surahId}:{ayah.number}
-          </div>
-          <div className="flex flex-col items-center gap-5 md:gap-6 mt-2 md:mt-4">
-            <button
-              onClick={() =>
-                isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)
-              }
-              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
-              title="Play Audio"
-            >
-              {isThisPlaying ? (
-                <Pause size={24} className="md:w-[28px] md:h-[28px]" fill="currentColor" />
-              ) : (
-                <Play size={24} className="md:w-[28px] md:h-[28px]" />
-              )}
-            </button>
-            <button
-              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
-              title="Read"
-            >
-              <BookOpen size={22} className="md:w-[24px] md:h-[24px]" />
-            </button>
-            <button
-              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
-              title="Bookmark"
-            >
-              <Bookmark size={22} className="md:w-[24px] md:h-[24px]" />
-            </button>
-            <button
-              className="text-gray-300 hover:text-[#2E7D32] transition-colors"
-              title="More"
-            >
-              <MoreHorizontal size={22} className="md:w-[24px] md:h-[24px]" />
-            </button>
-          </div>
+      {/* Top Header Row (Mobile & Desktop) */}
+      <div className="flex justify-between items-center mb-8">
+        <div className="text-[#2E7D32] font-bold text-lg md:text-xl tracking-tight">
+          {surahId}:{ayah.number}
         </div>
-
-        {/* Main Content */}
-        <div className="flex-1 min-w-0">
-          <div 
-            className="mb-8 md:mb-14 cursor-pointer group/ayah"
-            onClick={() => isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)}
-            title="Click to play audio"
+        
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() =>
+              isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)
+            }
+            className="text-gray-400 hover:text-[#2E7D32] transition-colors"
+            title="Play Audio"
           >
-            {ayah.words && ayah.words.length > 0 ? (
-              <p
-                className={`${arabicFont} leading-[2.5] md:leading-[2.8] text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
-                style={{ fontSize: `${arabicFontSize}px` }}
-                dir="rtl"
-              >
-                {ayah.words.map((word, idx) => {
-                  // Build direct CDN URL from surahId:ayahNumber:position
-                  // Format: https://audio.qurancdn.com/wbw/001_001_001.mp3
-                  const wordAudioUrl = word.charTypeName === "word"
-                    ? `https://audio.qurancdn.com/wbw/${String(surahId).padStart(3, '0')}_${String(ayah.number).padStart(3, '0')}_${String(word.position).padStart(3, '0')}.mp3`
-                    : null;
-
-                  return (
-                  <span
-                    key={word.id || idx}
-                    className="relative group cursor-pointer inline-block mx-[0.1em]"
-                    onClick={(e) => {
-                      if (wordAudioUrl && word.charTypeName === "word") {
-                        e.stopPropagation();
-                        playWordAudio(wordAudioUrl);
-                      }
-                    }}
-                  >
-                    {word.charTypeName === "end" ? (
-                      <span className="relative flex items-center justify-center w-[2.6em] h-[2.6em] mx-2 text-gray-500 select-none transition-all duration-300">
-                        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-80" fill="none" stroke="currentColor" strokeWidth="1.2">
-                          <path d="M50 4C55 12 75 14 82 22C86 28 92 35 92 50C92 65 86 72 82 78C75 86 55 88 50 96C45 88 25 86 18 78C14 72 8 65 8 50C8 35 14 28 18 22C25 14 45 12 50 4Z" strokeLinejoin="round" />
-                          <circle cx="50" cy="50" r="32" strokeWidth="1" />
-                          <circle cx="50" cy="50" r="28" strokeWidth="0.5" opacity="0.5" />
-                          <path d="M40 15Q50 20 60 15" strokeWidth="0.8" />
-                          <path d="M40 85Q50 80 60 85" strokeWidth="0.8" />
-                          <path d="M15 40Q20 50 15 60" strokeWidth="0.8" />
-                          <path d="M85 40Q80 50 85 60" strokeWidth="0.8" />
-                          <path d="M45 5C50 1 55 5" strokeWidth="1.5" />
-                        </svg>
-                        <span className="relative z-10 font-bold text-[#2E7D32] drop-shadow-sm" style={{ fontSize: '0.45em', transform: 'translateY(5%)' }}>
-                          {word.arabic}
-                        </span>
-                      </span>
-                    ) : (
-                      <span className="hover:text-[#2E7D32] transition-colors">{word.arabic}</span>
-                    )}
-                    {word.translation && word.charTypeName === "word" && (
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#333333] text-white text-[15px] px-3 py-1.5 rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none shadow-lg font-inter tracking-wide font-medium">
-                        {word.translation}
-                        <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-0.5 border-4 border-transparent border-t-[#333333]"></span>
-                      </span>
-                    )}
-                  </span>
-                  );
-                })}
-              </p>
+            {isThisPlaying ? (
+              <Pause size={20} fill="currentColor" />
             ) : (
-              <p
-                className={`${arabicFont} leading-loose text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors`}
-                style={{ fontSize: `${arabicFontSize}px` }}
-                dir="rtl"
-              >
-                {ayah.arabic}
-              </p>
+              <Play size={20} fill="currentColor" />
             )}
-          </div>
-
-          <div className="mt-10 pt-8 border-t border-gray-50 dark:border-gray-800/30">
-            <p className="text-[11px] text-gray-400 uppercase tracking-[0.15em] mb-4 font-bold">
-              SAHEEH INTERNATIONAL
-            </p>
-            <p
-              className="text-gray-700 dark:text-gray-300 font-inter leading-relaxed text-xl font-normal opacity-90"
-              style={{ fontSize: `${translationFontSize}px` }}
-            >
-              {ayah.translation}
-            </p>
-          </div>
+          </button>
+          
+          <button className="text-gray-400 hover:text-[#2E7D32] transition-colors">
+            <Bookmark size={20} />
+          </button>
+          
+          <button className="text-gray-400 hover:text-[#2E7D32] transition-colors">
+            <MoreHorizontal size={20} />
+          </button>
         </div>
+      </div>
+
+      {/* Arabic Text */}
+      <div 
+        className="mb-8 md:mb-12 cursor-pointer group/ayah"
+        onClick={() => isThisPlaying ? stopAudio() : playAudio(audioUrl, ayah.number)}
+      >
+        {ayah.words && ayah.words.length > 0 ? (
+          <p
+            className={`${arabicFont} leading-[2.5] md:leading-[2.8] text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
+            style={{ fontSize: `${arabicFontSize}px` }}
+            dir="rtl"
+          >
+            {ayah.words.map((word, idx) => {
+              const wordAudioUrl = word.charTypeName === "word"
+                ? `https://audio.qurancdn.com/wbw/${String(surahId).padStart(3, '0')}_${String(ayah.number).padStart(3, '0')}_${String(word.position).padStart(3, '0')}.mp3`
+                : null;
+
+              return (
+                <span
+                  key={word.id || idx}
+                  className="relative group cursor-pointer inline-block mx-[0.1em]"
+                  onClick={(e) => {
+                    if (wordAudioUrl && word.charTypeName === "word") {
+                      e.stopPropagation();
+                      playWordAudio(wordAudioUrl);
+                    }
+                  }}
+                >
+                  {word.charTypeName === "end" ? (
+                    <span className="relative flex items-center justify-center w-[2.2em] h-[2.2em] mx-1 text-gray-400 select-none">
+                      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-60" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <circle cx="50" cy="50" r="45" />
+                        <circle cx="50" cy="50" r="35" strokeWidth="1" />
+                      </svg>
+                      <span className="relative z-10 font-bold text-[#2E7D32]" style={{ fontSize: '0.45em' }}>
+                        {word.arabic}
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="hover:text-[#2E7D32] transition-colors">{word.arabic}</span>
+                  )}
+                  {word.translation && word.charTypeName === "word" && (
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-[#333333] text-white text-[12px] px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none">
+                      {word.translation}
+                    </span>
+                  )}
+                </span>
+              );
+            })}
+          </p>
+        ) : (
+          <p
+            className={`${arabicFont} leading-loose text-right text-gray-800 dark:text-gray-100 transition-colors`}
+            style={{ fontSize: `${arabicFontSize}px` }}
+            dir="rtl"
+          >
+            {ayah.arabic}
+          </p>
+        )}
+      </div>
+
+      {/* Translation */}
+      <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800/30">
+        <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-3 font-bold">
+          SAHEEH INTERNATIONAL
+        </p>
+        <p
+          className="text-gray-700 dark:text-gray-300 font-inter leading-relaxed font-normal"
+          style={{ fontSize: `${translationFontSize}px` }}
+        >
+          {ayah.translation}
+        </p>
       </div>
     </div>
   );
