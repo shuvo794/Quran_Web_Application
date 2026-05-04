@@ -1,6 +1,30 @@
 import surahsData from './surahs.json';
+import fs from 'fs';
+import path from 'path';
+
 // Simple in-memory cache to speed up navigation
 const cache = new Map<string, any>();
+
+// Persistent filesystem cache for production-like speed in dev
+const CACHE_DIR = path.join(process.cwd(), 'data');
+
+function getFromFsCache(key: string) {
+  try {
+    const filePath = path.join(CACHE_DIR, `${key}.json`);
+    if (fs.existsSync(filePath)) {
+      return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+  } catch (e) {}
+  return null;
+}
+
+function saveToFsCache(key: string, data: any) {
+  try {
+    if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true });
+    const filePath = path.join(CACHE_DIR, `${key}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(data));
+  } catch (e) {}
+}
 
 async function fetchWithRetry(url: string, options: any = {}, retries = 2) {
   for (let i = 0; i < retries; i++) {
@@ -103,6 +127,13 @@ export async function getAllSurahs(): Promise<Surah[]> {
 export async function getSurahById(id: number): Promise<Surah | null> {
   const cacheKey = `surah-${id}`;
   if (cache.has(cacheKey)) return cache.get(cacheKey);
+  
+  // Check filesystem cache first
+  const fsCached = getFromFsCache(cacheKey);
+  if (fsCached) {
+    cache.set(cacheKey, fsCached);
+    return fsCached;
+  }
 
   try {
     const [resData, wordsMap] = await Promise.all([
@@ -146,6 +177,7 @@ export async function getSurahById(id: number): Promise<Surah | null> {
       ayahs,
     };
 
+    saveToFsCache(cacheKey, surah);
     cache.set(cacheKey, surah);
     return surah;
   } catch (error) {
@@ -157,6 +189,13 @@ export async function getSurahById(id: number): Promise<Surah | null> {
 export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[] } | null> {
   const cacheKey = `juz-${id}`;
   if (cache.has(cacheKey)) return cache.get(cacheKey);
+
+  // Check filesystem cache first
+  const fsCached = getFromFsCache(cacheKey);
+  if (fsCached) {
+    cache.set(cacheKey, fsCached);
+    return fsCached;
+  }
 
   try {
     const [arRes, enRes, wordsMap] = await Promise.all([
@@ -197,6 +236,7 @@ export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[
       ayahs,
     };
 
+    saveToFsCache(cacheKey, result);
     cache.set(cacheKey, result);
     return result;
   } catch (error) {
@@ -208,6 +248,13 @@ export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[
 export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah[] } | null> {
   const cacheKey = `page-${id}`;
   if (cache.has(cacheKey)) return cache.get(cacheKey);
+
+  // Check filesystem cache first
+  const fsCached = getFromFsCache(cacheKey);
+  if (fsCached) {
+    cache.set(cacheKey, fsCached);
+    return fsCached;
+  }
 
   try {
     const [arRes, enRes, wordsMap] = await Promise.all([
@@ -248,6 +295,7 @@ export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah
       ayahs,
     };
 
+    saveToFsCache(cacheKey, result);
     cache.set(cacheKey, result);
     return result;
   } catch (error) {
