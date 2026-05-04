@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📖 Quran Web Application
 
-## Getting Started
+A premium, high-fidelity Quran reading application built with **Next.js 16**, **TypeScript**, and **Tailwind CSS**. Designed for a smooth, responsive, and professional reading experience with integrated audio support and persistent settings.
 
-First, run the development server:
+**Live Site:** [quran-web-application-i5gk.vercel.app](https://quran-web-application-i5gk.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **📖 Complete Quran Reader**: Support for all 114 Surahs, 30 Juz, and 604 Pages.
+- **🎧 Audio Playback**: High-quality audio per Ayah and interactive word-by-word audio playback.
+- **🎨 Premium UI/UX**: Modern, pixel-perfect design inspired by QuranMazid, featuring a sleek dual-sidebar layout.
+- **⚙️ Customizable Settings**:
+  - Switch between multiple Arabic fonts (Amiri, Scheherazade).
+  - Dynamic font size control for both Arabic and Translation text.
+  - Persistent settings via `localStorage`.
+- **🌙 Dark Mode**: Fully supported dark theme with curated color palettes for night-time reading.
+- **⚡ Performance Optimized**:
+  - Instant sidebar navigation using local metadata caching.
+  - Efficient rendering with `React.memo` and `useDeferredValue` for search.
+  - Static Site Generation (SSG) for all 750+ content pages.
+- **📱 Fully Responsive**: Seamless experience across Mobile, Tablet, and Desktop devices.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
+- **Data Sources**:
+  - [Al-Quran Cloud API](https://alquran.cloud/api)
+  - [Quran.com API](https://quran.com/developers)
+  - Local Filesystem Cache for ultra-fast navigation.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Installation & Setup
 
-## Deploy on Vercel
+1. **Clone the repository**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   git clone https://github.com/shuvo794/Quran_Web_Application.git
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Warm up the cache (Optional)**:
+   To ensure near-instant loading, run the cache warmup script:
+
+   ```bash
+   node scratch/warmup.js
+   ```
+
+4. **Run the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for production**:
+   ```bash
+   npm run build
+   npm run start
+   ```
+
+---
+
+## ⚡ Performance Optimizations
+
+This project implements advanced performance techniques to ensure a smooth user experience:
+
+- **Persistent Filesystem Cache**: API responses are cached locally to eliminate network latency after the first load.
+- **Single-Worker Build**: Configured to generate static pages reliably even under strict API rate limits.
+- **Memoized Components**: Prevent unnecessary re-renders in large lists (e.g., Al-Baqarah with 286 Ayahs).
+- **Network Resilience**: 30-second timeouts and automatic fallback data for offline reliability.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
