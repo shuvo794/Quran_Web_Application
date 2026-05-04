@@ -156,4 +156,4 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
       </div>
     </div>
   );
-}
+});
