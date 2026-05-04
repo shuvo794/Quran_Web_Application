@@ -17,6 +17,14 @@ export default async function JuzPage({
   const juz = await getJuzById(parseInt(resolvedParams.id));
   const allSurahs = await getAllSurahs().catch(() => []);
 
+  if (!juz || !juz.ayahs) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6 pb-24">
       {/* We can remove the old generic text center header since we have SurahHeader now, 

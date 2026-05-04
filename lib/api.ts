@@ -26,11 +26,11 @@ function saveToFsCache(key: string, data: any) {
   } catch (e) {}
 }
 
-async function fetchWithRetry(url: string, options: any = {}, retries = 2) {
+async function fetchWithRetry(url: string, options: any = {}, retries = 3) {
   for (let i = 0; i < retries; i++) {
     try {
       const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+      const id = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
       const res = await fetch(url, {
         ...options,
@@ -86,7 +86,7 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
   try {
     // Adding audio=7 for Mishary Rashid Al-Afasy which supports word-by-word audio
     const res = await fetchWithRetry(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation,audio_url&audio=7&language=bn&per_page=400`, {
-      cache: 'no-store' 
+      cache: 'force-cache' 
     });
     
     if (!res || !res.ok) return null;
@@ -138,7 +138,7 @@ export async function getSurahById(id: number): Promise<Surah | null> {
   try {
     const [resData, wordsMap] = await Promise.all([
       fetchWithRetry(`https://api.alquran.cloud/v1/surah/${id}/editions/quran-uthmani,en.asad`, {
-        cache: 'no-store'
+        cache: 'force-cache'
       }).then(r => r && r.ok ? r.json() : null),
       fetchWordsData('chapter', id).catch(() => null)
     ]);
@@ -199,8 +199,8 @@ export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[
 
   try {
     const [arRes, enRes, wordsMap] = await Promise.all([
-      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`, { cache: 'no-store' }),
-      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/en.asad`, { cache: 'no-store' }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`, { cache: 'force-cache' }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/en.asad`, { cache: 'force-cache' }),
       fetchWordsData('juz', id).catch(() => null)
     ]);
     
@@ -258,8 +258,8 @@ export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah
 
   try {
     const [arRes, enRes, wordsMap] = await Promise.all([
-      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`, { cache: 'no-store' }),
-      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/en.asad`, { cache: 'no-store' }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`, { cache: 'force-cache' }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/en.asad`, { cache: 'force-cache' }),
       fetchWordsData('page', id).catch(() => null)
     ]);
     
