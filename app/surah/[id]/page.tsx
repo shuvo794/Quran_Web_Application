@@ -1,6 +1,7 @@
 import { getSurahById, getAllSurahs } from "@/lib/api";
 import AyahCard from "@/components/AyahCard";
 import SurahHeader from "@/components/SurahHeader";
+import SurahNavigation from "@/components/SurahNavigation";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -41,6 +42,8 @@ export default async function SurahPage({ params }: Props) {
           <AyahCard key={ayah.number} ayah={ayah} surahId={surah.id} />
         ))}
       </div>
+
+      <SurahNavigation currentId={id} />
     </div>
   );
 }
