@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Ayah } from "@/lib/api";
 import { useSettingsStore } from "@/store/settings";
 import { useAudioStore } from "@/store/audio";
@@ -10,9 +11,16 @@ interface Props {
   surahId: number;
 }
 
-export default function AyahCard({ ayah, surahId }: Props) {
-  const { arabicFont, arabicFontSize, translationFontSize } = useSettingsStore();
-  const { currentAudioUrl, isPlaying, playAudio, stopAudio, playWordAudio } = useAudioStore();
+export default memo(function AyahCard({ ayah, surahId }: Props) {
+  const arabicFont = useSettingsStore(state => state.arabicFont);
+  const arabicFontSize = useSettingsStore(state => state.arabicFontSize);
+  const translationFontSize = useSettingsStore(state => state.translationFontSize);
+  
+  const currentAudioUrl = useAudioStore(state => state.currentAudioUrl);
+  const isPlaying = useAudioStore(state => state.isPlaying);
+  const playAudio = useAudioStore(state => state.playAudio);
+  const stopAudio = useAudioStore(state => state.stopAudio);
+  const playWordAudio = useAudioStore(state => state.playWordAudio);
 
   const audioUrl = ayah.audio;
   const isThisPlaying = currentAudioUrl === audioUrl && isPlaying;
