@@ -37,28 +37,28 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
       
       {/* Sidebar Container */}
       <div className={`
-        fixed lg:static top-0 left-0 h-screen w-[320px] bg-[var(--surface)] border-r border-[var(--border)]
+        fixed lg:static top-0 left-0 h-screen w-[320px] bg-[#F8F9FA] dark:bg-[#121212] border-r border-[var(--border)]
         transform transition-transform duration-300 z-50 flex flex-col shrink-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="p-4 border-b border-[var(--border)] shrink-0 flex flex-col gap-4">
+        <div className="p-4 border-b border-[var(--border)] shrink-0 flex flex-col gap-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 bg-gray-100 dark:bg-[#2A2A2A] p-1 rounded-lg w-full">
+            <div className="flex items-center gap-2 bg-[#F1F3F4] dark:bg-[#2A2A2A] p-2 rounded-[32px] w-full">
               <button 
                 onClick={() => setActiveTab('surah')}
-                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-semibold text-center transition-all ${activeTab === 'surah' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+                className={`flex-1 py-2 px-4 rounded-[24px] text-sm font-bold text-center transition-all ${activeTab === 'surah' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white border-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
               >
                 Surah
               </button>
               <button 
                 onClick={() => setActiveTab('juz')}
-                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-semibold text-center transition-all ${activeTab === 'juz' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+                className={`flex-1 py-2 px-4 rounded-[24px] text-sm font-bold text-center transition-all ${activeTab === 'juz' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white border-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
               >
                 Juz
               </button>
               <button 
                 onClick={() => setActiveTab('page')}
-                className={`flex-1 py-1.5 px-3 rounded-md text-sm font-semibold text-center transition-all ${activeTab === 'page' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+                className={`flex-1 py-2 px-4 rounded-[24px] text-sm font-bold text-center transition-all ${activeTab === 'page' ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white border-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
               >
                 Page
               </button>
@@ -67,13 +67,13 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
           </div>
           
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input 
               type="text" 
-              placeholder={`Search by ${activeTab === 'surah' ? 'Surah Name' : activeTab === 'juz' ? 'Juz Number' : 'Page Number'}`} 
+              placeholder={`Search ${activeTab === 'surah' ? 'Surah' : activeTab === 'juz' ? 'Juz' : 'Page'}`} 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-[#2A2A2A] border border-transparent focus:border-brand-500 focus:bg-[var(--surface)] focus:outline-none rounded-lg py-2 pl-10 pr-4 text-sm text-[var(--foreground)] transition-colors"
+              className="w-full bg-[#F1F3F4] dark:bg-[#2A2A2A] border-none focus:ring-0 rounded-[32px] py-3 pl-11 pr-4 text-sm text-[var(--foreground)] transition-colors"
             />
           </div>
         </div>
@@ -87,29 +87,29 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
                 href={`/surah/${surah.id}`}
                 onClick={() => onClose()}
                 className={`
-                  flex items-center justify-between p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
-                  ${isActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
+                  flex items-center justify-between p-4 mb-2 rounded-2xl border border-transparent transition-all relative overflow-hidden group
+                  ${isActive ? 'bg-white dark:bg-[#1A1A1A] shadow-md border-gray-100 dark:border-gray-800' : 'hover:bg-white/50 dark:hover:bg-[#2A2A2A]/50'}
                 `}
               >
-                {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500 rounded-r-md"></div>}
+                {isActive && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-500 rounded-r-md"></div>}
                 <div className="flex items-center gap-4 pl-1">
-                  <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
-                    <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
-                    <span className="relative z-10 text-xs font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{surah.id}</span>
+                  <div className="relative w-11 h-11 flex items-center justify-center shrink-0">
+                    <div className={`absolute inset-0 transition-colors transform rotate-45 rounded-lg flex items-center justify-center ${isActive ? 'bg-brand-500 shadow-lg shadow-brand-500/20' : 'bg-[#F1F3F4] dark:bg-[#3A3A3A] group-hover:bg-brand-500'}`}></div>
+                    <span className={`relative z-10 text-sm font-bold transition-colors ${isActive ? 'text-white' : 'text-gray-700 dark:text-gray-300 group-hover:text-white'}`}>{surah.id}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[15px] text-[var(--foreground)] flex items-center gap-2">
+                    <h3 className="font-bold text-[16px] text-[var(--foreground)] flex items-center gap-2">
                       {surah.nameEnglish}
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold transition-colors ${surah.revelationType?.toLowerCase() === 'meccan' ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400' : 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400'}`}>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold transition-colors ${surah.revelationType?.toLowerCase() === 'meccan' ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400' : 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400'}`}>
                         {surah.revelationType?.toLowerCase() === 'meccan' ? 'Makkah' : 'Madinah'}
                       </span>
                     </h3>
-                    <p className="text-[11px] text-gray-500 font-medium">{surah.nameTranslation}</p>
+                    <p className="text-xs text-gray-400 font-medium">{surah.nameTranslation}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-amiri text-lg font-bold text-[var(--foreground)]" dir="rtl">{surah.nameArabic}</p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">{surah.numberOfAyahs} Ayahs</p>
+                  <p className="font-amiri text-xl font-bold text-gray-800 dark:text-gray-200" dir="rtl">{surah.nameArabic}</p>
+                  <p className="text-[10px] text-gray-400 font-bold mt-1 uppercase tracking-wider">{surah.numberOfAyahs} Ayahs</p>
                 </div>
               </Link>
             );
@@ -121,58 +121,47 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
               const surahIds = JUZ_SURAH_MAPPING[juz - 1];
               const firstSurah = surahs.find(s => s.id === surahIds[0]);
               const subtitle = firstSurah ? `${firstSurah.nameEnglish}${surahIds.length > 1 ? ' & More' : ''}` : '';
+              const isExpanded = expandedJuz === juz;
               
               return (
-                <div key={juz} className="mb-2">
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href={`/juz/${juz}`}
-                      onClick={() => onClose()}
-                      className="flex-1 flex items-center justify-between p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-xl hover:shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all text-left"
-                    >
-                      <div>
-                        <h3 className="font-bold text-[15px] text-brand-500">Juz {juz}</h3>
-                        <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-                      </div>
-                      <div className="text-center">
-                        <span className="block font-bold text-gray-700 dark:text-gray-300 text-sm">{surahIds.length}</span>
-                        <span className="text-[10px] text-gray-400">Surah</span>
-                      </div>
-                    </Link>
-                    <button 
-                      onClick={() => setExpandedJuz(expandedJuz === juz ? null : juz)}
-                      className="p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-xl hover:bg-gray-100 dark:hover:bg-[#3A3A3A] transition-colors flex items-center justify-center shrink-0 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                      aria-label="Toggle Surahs"
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${expandedJuz === juz ? 'rotate-180' : ''}`}>
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
-                    </button>
+                <div key={juz} className="mb-4 bg-white dark:bg-[#1A1A1A] rounded-2xl p-4 border border-transparent hover:border-gray-100 dark:hover:border-gray-800 transition-all">
+                  <div 
+                    className="flex items-center justify-between cursor-pointer"
+                    onClick={() => setExpandedJuz(isExpanded ? null : juz)}
+                  >
+                    <div>
+                      <h3 className="font-bold text-lg text-brand-500">Juz {juz}</h3>
+                      <p className="text-sm text-gray-400 font-medium">{subtitle}</p>
+                    </div>
+                    <div className="text-right flex flex-col items-end">
+                      <span className="text-lg font-bold text-gray-700 dark:text-gray-300 leading-tight">{surahIds.length}</span>
+                      <span className="text-xs text-gray-400 font-medium">Surah</span>
+                    </div>
                   </div>
                   
-                  {expandedJuz === juz && (
-                    <div className="pl-4 pr-1 mt-2 space-y-1">
+                  {isExpanded && (
+                    <div className="mt-4 space-y-2 bg-[#F8F9F9] dark:bg-[#222] rounded-xl p-2">
                       {surahIds.map(surahId => {
                         const surah = surahs.find(s => s.id === surahId);
                         if (!surah) return null;
-                        const isSurahActive = pathname === `/juz/${juz}` || pathname === `/surah/${surahId}`;
+                        const isSurahActive = pathname === `/surah/${surahId}`;
                         return (
                           <Link 
                             key={surahId}
                             href={`/surah/${surahId}`}
                             onClick={() => onClose()}
                             className={`
-                              flex items-center gap-4 p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
-                              ${isSurahActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
+                              flex items-center gap-4 p-3 rounded-xl transition-all group
+                              ${isSurahActive ? 'bg-white dark:bg-[#2A2A2A] shadow-sm' : 'hover:bg-white/50 dark:hover:bg-[#2A2A2A]/50'}
                             `}
                           >
-                            <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
-                              <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
-                              <span className="relative z-10 text-[10px] font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{surahId}</span>
+                            <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
+                              <div className={`absolute inset-0 transition-colors transform rotate-45 rounded-lg flex items-center justify-center ${isSurahActive ? 'bg-brand-500 shadow-lg shadow-brand-500/20' : 'bg-[#F1F3F4] dark:bg-[#333] group-hover:bg-gray-200 dark:group-hover:bg-[#444]'}`}></div>
+                              <span className={`relative z-10 text-sm font-bold transition-colors ${isSurahActive ? 'text-white' : 'text-gray-500'}`}>{surahId}</span>
                             </div>
                             <div>
-                              <h3 className="font-semibold text-sm text-[var(--foreground)]">{surah.nameEnglish}</h3>
-                              <p className="text-[10px] text-gray-500">{surah.nameTranslation}</p>
+                              <h3 className={`font-bold text-[15px] transition-colors ${isSurahActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>{surah.nameEnglish}</h3>
+                              <p className="text-[11px] text-gray-400 font-medium">{surah.nameTranslation}</p>
                             </div>
                           </Link>
                         );
@@ -193,18 +182,18 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
                   href={`/page/${page}`}
                   onClick={() => onClose()}
                   className={`
-                    flex items-center p-3 rounded-lg border border-transparent transition-all relative overflow-hidden group
-                    ${isActive ? 'bg-brand-50 dark:bg-[#2A2A2A]' : 'hover:bg-gray-50 dark:hover:bg-[#2A2A2A]'}
+                    flex items-center p-4 mb-2 rounded-2xl border border-transparent transition-all relative overflow-hidden group
+                    ${isActive ? 'bg-white dark:bg-[#1A1A1A] shadow-md border-gray-100 dark:border-gray-800' : 'hover:bg-white/50 dark:hover:bg-[#2A2A2A]/50'}
                   `}
                 >
-                  {isActive && <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500 rounded-r-md"></div>}
+                  {isActive && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-500 rounded-r-md"></div>}
                   <div className="flex items-center gap-4 pl-1 w-full">
-                    <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
-                      <div className="absolute inset-0 bg-gray-100 dark:bg-[#3A3A3A] group-hover:bg-brand-500 transition-colors transform rotate-45 rounded flex items-center justify-center"></div>
-                      <span className="relative z-10 text-xs font-bold text-[var(--foreground)] group-hover:text-white transition-colors">{page}</span>
+                    <div className="relative w-11 h-11 flex items-center justify-center shrink-0">
+                      <div className={`absolute inset-0 transition-colors transform rotate-45 rounded-lg flex items-center justify-center ${isActive ? 'bg-brand-500 shadow-lg shadow-brand-500/20' : 'bg-[#F1F3F4] dark:bg-[#3A3A3A] group-hover:bg-brand-500'}`}></div>
+                      <span className={`relative z-10 text-sm font-bold transition-colors ${isActive ? 'text-white' : 'text-gray-700 dark:text-gray-300 group-hover:text-white'}`}>{page}</span>
                     </div>
                     <div className="flex-1 flex justify-between items-center">
-                      <h3 className="font-semibold text-[15px] text-[var(--foreground)]">Page {page}</h3>
+                      <h3 className={`font-bold text-[16px] transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>Page {page}</h3>
                     </div>
                   </div>
                 </Link>
