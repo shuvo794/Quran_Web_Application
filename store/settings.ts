@@ -16,7 +16,7 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       theme: 'light',
-      arabicFont: 'font-amiri',
+      arabicFont: 'font-kfgq',
       arabicFontSize: 32,
       translationFontSize: 16,
       setTheme: (theme) => {

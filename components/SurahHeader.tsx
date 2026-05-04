@@ -10,9 +10,21 @@ interface Props {
 export default function SurahHeader({ surah, showBismillah }: Props) {
   const isMeccan = surah.revelationType?.toLowerCase() === "meccan";
   const revelationCity = isMeccan ? "Makkah" : "Madinah";
+  const illustration = isMeccan ? "/assets/images/makkah.png" : "/assets/images/madinah.png";
 
   return (
     <div className="relative flex flex-col items-center py-12 mb-12 border-b border-gray-100 dark:border-gray-800/40 text-center">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-10 hidden md:block">
+        <Image 
+          src={illustration} 
+          alt={revelationCity} 
+          width={200} 
+          height={200} 
+          className="grayscale"
+          priority
+        />
+      </div>
+
       <Link href={`/surah/${surah.id}`} className="group mb-2">
         <h1 className="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight">
           Surah {surah.nameEnglish}
