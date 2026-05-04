@@ -59,22 +59,29 @@ export default function ClientLayout({ children, surahs }: Props) {
               </div>
             </div>
             
-            <div className="flex items-center gap-1 sm:gap-4">
-              <button className="p-2 text-gray-400 dark:text-white hover:text-brand-500 transition-colors rounded-full" onClick={() => window.location.href='/search'}>
-                <Search size={22} />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button className="p-2.5 text-gray-400 dark:text-gray-300 hover:text-brand-500 bg-gray-50 dark:bg-[#222] rounded-full transition-all" onClick={() => window.location.href='/search'}>
+                <Search size={20} />
               </button>
               
               {mounted && (
                 <button 
-                  className="p-2 text-gray-400 dark:text-white hover:text-brand-500 transition-colors rounded-full" 
+                  className="p-2.5 text-gray-400 dark:text-gray-300 hover:text-brand-500 bg-gray-50 dark:bg-[#222] rounded-full transition-all" 
                   onClick={toggleTheme}
                 >
-                  {theme === 'light' ? <Moon size={22} fill="currentColor" /> : <Sun size={22} fill="currentColor" />}
+                  {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
               )}
               
-              <button className="p-2 text-gray-400 dark:text-white hover:text-brand-500 transition-colors rounded-full" onClick={() => setIsSettingsOpen(true)}>
-                <Settings size={22} fill="currentColor" />
+              <button className="p-2.5 text-gray-400 dark:text-gray-300 hover:text-brand-500 bg-gray-50 dark:bg-[#222] rounded-full transition-all" onClick={() => setIsSettingsOpen(true)}>
+                <Settings size={20} />
+              </button>
+
+              <button className="hidden sm:flex items-center gap-2 bg-[#2E7D32] hover:bg-[#256629] text-white px-5 py-2 rounded-full font-bold text-sm transition-all shadow-lg shadow-brand-500/10">
+                Support Us
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="opacity-90">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
               </button>
             </div>
           </header>

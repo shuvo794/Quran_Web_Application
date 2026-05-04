@@ -15,7 +15,7 @@ const SurahCard = memo(({ surah, isActive, onClick }: { surah: Surah; isActive: 
     onClick={onClick}
     className={`
       flex items-center p-5 mb-3 rounded-2xl border transition-all relative group
-      ${isActive ? 'bg-[#F8FAF8] dark:bg-[#1A1A1A] border-[#E8F0E8] dark:border-green-900/30' : 'bg-white dark:bg-[#1F1F1F] border-transparent hover:border-gray-100 dark:hover:border-gray-800'}
+      ${isActive ? 'bg-[var(--brand-50)] dark:bg-[#1C251C] border-[#E8F0E8] dark:border-[#2E7D32]/40 shadow-sm' : 'bg-[var(--surface)] border-transparent hover:border-gray-100 dark:hover:border-gray-800'}
     `}
   >
     <div className="flex items-center gap-5 pl-1">
@@ -40,7 +40,7 @@ const JuzCard = memo(({ juz, surahIds, surahs, expandedJuz, onToggle, pathname, 
   const isExpanded = expandedJuz === juz;
   
   return (
-    <div className="mb-4 bg-white dark:bg-[#1A1A1A] rounded-2xl p-4 border border-transparent hover:border-gray-100 dark:hover:border-gray-800 transition-all">
+    <div className="mb-4 bg-[var(--surface)] rounded-2xl p-4 border border-transparent hover:border-gray-100 dark:hover:border-gray-800 transition-all">
       <div 
         className="flex items-center justify-between cursor-pointer"
         onClick={() => onToggle(isExpanded ? null : juz)}
@@ -95,7 +95,7 @@ const PageCard = memo(({ page, isActive, onClick }: { page: number; isActive: bo
     onClick={onClick}
     className={`
       flex items-center p-4 mb-2 rounded-2xl border border-transparent transition-all relative overflow-hidden group
-      ${isActive ? 'bg-white dark:bg-[#1A1A1A] shadow-md border-gray-100 dark:border-gray-800' : 'hover:bg-white/50 dark:hover:bg-[#2A2A2A]/50'}
+      ${isActive ? 'bg-[var(--surface)] shadow-md border-gray-100 dark:border-gray-800' : 'hover:bg-black/5 dark:hover:bg-white/5'}
     `}
   >
     {isActive && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-500 rounded-r-md"></div>}
@@ -154,7 +154,7 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
       
       {/* Sidebar Container */}
       <div className={`
-        fixed lg:static top-0 left-0 h-screen w-[320px] bg-[#F8F9FA] dark:bg-[#121212] border-r border-[var(--border)]
+        fixed lg:static top-0 left-0 h-screen w-[320px] bg-[var(--background)] border-r border-[var(--border)]
         transform transition-transform duration-300 z-50 flex flex-col shrink-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
@@ -170,7 +170,7 @@ export default function SurahListSidebar({ surahs, isOpen, onClose }: Props) {
                 <button 
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`flex-1 py-2 px-4 rounded-[24px] text-sm font-bold text-center capitalize transition-all ${activeTab === tab ? 'bg-white dark:bg-[#3A3A3A] shadow-sm text-gray-900 dark:text-white border-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+                  className={`flex-1 py-2.5 px-4 rounded-[24px] text-sm font-bold text-center capitalize transition-all ${activeTab === tab ? 'bg-white dark:bg-[#222] shadow-sm text-gray-900 dark:text-white border-2 border-gray-900 dark:border-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
                 >
                   {tab}
                 </button>

@@ -94,8 +94,8 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
                     }}
                   >
                     {word.charTypeName === "end" ? (
-                      <span className="relative inline-flex items-center justify-center w-[1.2em] h-[1.2em] mx-2 text-gray-400 select-none align-middle translate-y-[0.1em]">
-                        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-60" fill="none" stroke="currentColor" strokeWidth="2">
+                      <span className="relative inline-flex items-center justify-center w-[1.2em] h-[1.2em] mx-2 text-gray-400 dark:text-gray-300 select-none align-middle translate-y-[0.1em]">
+                        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-60 dark:opacity-40" fill="none" stroke="currentColor" strokeWidth="2">
                           <circle cx="50" cy="50" r="44" />
                           <circle cx="50" cy="50" r="36" strokeWidth="1" />
                           <path d="M50 2 C54 2 56 6 50 12 C44 6 46 2 50 2 Z" fill="currentColor" stroke="none" />
@@ -103,7 +103,7 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
                           <path d="M2 50 C2 46 6 44 12 50 C6 56 2 54 2 50 Z" fill="currentColor" stroke="none" />
                           <path d="M98 50 C98 46 94 44 88 50 C94 56 98 54 98 50 Z" fill="currentColor" stroke="none" />
                         </svg>
-                        <span className="relative z-10 font-bold text-[#2E7D32]" style={{ fontSize: '0.45em', fontFamily: 'var(--font-amiri)' }}>
+                        <span className="relative z-10 font-bold text-[#2E7D32] dark:text-[#4CAF50]" style={{ fontSize: '0.45em', fontFamily: 'var(--font-amiri)' }}>
                           {word.arabic}
                         </span>
                       </span>
@@ -132,7 +132,7 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
 
         {/* Translation */}
         <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800/30">
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-3 font-bold">
+          <p className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 font-bold">
             SAHEEH INTERNATIONAL
           </p>
           <p

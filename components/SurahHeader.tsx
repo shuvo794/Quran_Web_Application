@@ -14,13 +14,13 @@ export default function SurahHeader({ surah, showBismillah }: Props) {
 
   return (
     <div className="relative flex flex-col items-center py-12 mb-12 border-b border-gray-100 dark:border-gray-800/40 text-center">
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-10 hidden md:block">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-20 dark:opacity-25 hidden md:block transition-opacity">
         <Image 
           src={illustration} 
           alt={revelationCity} 
-          width={200} 
-          height={200} 
-          className="grayscale"
+          width={240} 
+          height={240} 
+          className="object-contain"
           priority
         />
       </div>
