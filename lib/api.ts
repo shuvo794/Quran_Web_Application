@@ -1,3 +1,4 @@
+import surahsData from './surahs.json';
 // Simple in-memory cache to speed up navigation
 const cache = new Map<string, any>();
 
@@ -61,7 +62,7 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
   try {
     // Adding audio=7 for Mishary Rashid Al-Afasy which supports word-by-word audio
     const res = await fetchWithRetry(`https://api.quran.com/api/v4/verses/by_${type}/${id}?words=true&word_fields=text_uthmani,translation,audio_url&audio=7&language=bn&per_page=400`, {
-      next: { revalidate: 86400 } 
+      cache: 'no-store' 
     });
     
     if (!res || !res.ok) return null;
@@ -89,45 +90,14 @@ async function fetchWordsData(type: 'chapter' | 'juz' | 'page', id: number) {
   }
 }
 
-const FALLBACK_SURAHS: Surah[] = [
-  { id: 1, nameArabic: "الفاتحة", nameEnglish: "Al-Fatihah", nameTranslation: "The Opener", revelationType: "Meccan", numberOfAyahs: 7 },
-  { id: 2, nameArabic: "البقرة", nameEnglish: "Al-Baqarah", nameTranslation: "The Cow", revelationType: "Medinan", numberOfAyahs: 286 },
-  { id: 3, nameArabic: "آل عمران", nameEnglish: "Ali 'Imran", nameTranslation: "Family of Imran", revelationType: "Medinan", numberOfAyahs: 200 },
-  { id: 18, nameArabic: "الكهف", nameEnglish: "Al-Kahf", nameTranslation: "The Cave", revelationType: "Meccan", numberOfAyahs: 110 },
-  { id: 36, nameArabic: "يس", nameEnglish: "Ya-Sin", nameTranslation: "Ya Sin", revelationType: "Meccan", numberOfAyahs: 83 },
-  { id: 67, nameArabic: "الملك", nameEnglish: "Al-Mulk", nameTranslation: "The Sovereignty", revelationType: "Meccan", numberOfAyahs: 30 },
-  { id: 114, nameArabic: "الناس", nameEnglish: "An-Nas", nameTranslation: "Mankind", revelationType: "Meccan", numberOfAyahs: 6 }
-];
+const FALLBACK_SURAHS: Surah[] = surahsData as Surah[];
 
 export async function getAllSurahs(): Promise<Surah[]> {
   if (cache.has('allSurahs')) return cache.get('allSurahs');
-
-  try {
-    const res = await fetchWithRetry('https://api.alquran.cloud/v1/meta', {
-      next: { revalidate: 86400 }
-    });
-    
-    if (res && res.ok) {
-      const data = await res.json();
-      const surahs = data.data.surahs.references.map((s: any) => ({
-        id: s.number,
-        nameArabic: s.name,
-        nameEnglish: s.englishName,
-        nameTranslation: s.englishNameTranslation,
-        revelationType: s.revelationType,
-        numberOfAyahs: s.numberOfAyahs,
-      }));
-      
-      cache.set('allSurahs', surahs);
-      return surahs;
-    }
-    
-    console.warn('Using fallback surahs due to API failure');
-    return FALLBACK_SURAHS;
-  } catch (error) {
-    console.error('Error fetching surahs:', error);
-    return FALLBACK_SURAHS;
-  }
+  
+  // Return local data immediately for instant load
+  cache.set('allSurahs', FALLBACK_SURAHS);
+  return FALLBACK_SURAHS;
 }
 
 export async function getSurahById(id: number): Promise<Surah | null> {
@@ -137,7 +107,7 @@ export async function getSurahById(id: number): Promise<Surah | null> {
   try {
     const [resData, wordsMap] = await Promise.all([
       fetchWithRetry(`https://api.alquran.cloud/v1/surah/${id}/editions/quran-uthmani,en.asad`, {
-        next: { revalidate: 86400 }
+        cache: 'no-store'
       }).then(r => r && r.ok ? r.json() : null),
       fetchWordsData('chapter', id).catch(() => null)
     ]);
@@ -190,8 +160,8 @@ export async function getJuzById(id: number): Promise<{ id: number; ayahs: Ayah[
 
   try {
     const [arRes, enRes, wordsMap] = await Promise.all([
-      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`, { next: { revalidate: 86400 } }),
-      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/en.asad`, { next: { revalidate: 86400 } }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/quran-uthmani`, { cache: 'no-store' }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/juz/${id}/en.asad`, { cache: 'no-store' }),
       fetchWordsData('juz', id).catch(() => null)
     ]);
     
@@ -241,8 +211,8 @@ export async function getPageById(id: number): Promise<{ id: number; ayahs: Ayah
 
   try {
     const [arRes, enRes, wordsMap] = await Promise.all([
-      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`, { next: { revalidate: 86400 } }),
-      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/en.asad`, { next: { revalidate: 86400 } }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/quran-uthmani`, { cache: 'no-store' }),
+      fetchWithRetry(`https://api.alquran.cloud/v1/page/${id}/en.asad`, { cache: 'no-store' }),
       fetchWordsData('page', id).catch(() => null)
     ]);
     
