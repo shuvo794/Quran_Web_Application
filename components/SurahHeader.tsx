@@ -10,18 +10,18 @@ interface Props {
 export default function SurahHeader({ surah, showBismillah }: Props) {
   const isMeccan = surah.revelationType?.toLowerCase() === "meccan";
   const revelationCity = isMeccan ? "Makkah" : "Madinah";
-  const illustrationSrc = isMeccan ? "/mokka.jpeg" : "/modina.jpeg";
+  const illustrationSrc = isMeccan ? "/assets/images/makkah.png" : "/assets/images/madinah.png";
 
   return (
-    <div className="relative flex items-center justify-between py-10 mb-16 border-b border-gray-100 dark:border-gray-800/40">
+    <div className="relative flex items-center py-10 mb-16 border-b border-gray-100 dark:border-gray-800/40">
       {/* Left side Illustration */}
-      <div className="flex-1 flex justify-start pointer-events-none hidden md:flex">
-        <div className="relative w-[180px] h-[120px] opacity-50 dark:opacity-70 transition-opacity">
+      <div className="absolute left-0 pointer-events-none">
+        <div className="relative w-[140px] md:w-[220px] h-[100px] md:h-[140px] opacity-15 dark:opacity-30 grayscale contrast-125">
           <Image 
             src={illustrationSrc} 
             alt={revelationCity}
             fill
-            sizes="180px"
+            sizes="(max-width: 768px) 140px, 220px"
             loading="eager"
             className="object-contain"
           />
@@ -31,39 +31,17 @@ export default function SurahHeader({ surah, showBismillah }: Props) {
       {/* Center content */}
       <div className="flex-1 text-center relative z-10 shrink-0">
         <Link href={`/surah/${surah.id}`} className="group inline-block">
-          <h1 className="text-[36px] font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-[#2E7D32] transition-colors tracking-tight font-inter">
+          <h1 className="text-[32px] md:text-[36px] font-bold text-gray-800 dark:text-gray-100 mb-2 transition-colors tracking-tight font-inter">
             Surah {surah.nameEnglish}
           </h1>
         </Link>
-        <div className="flex items-center justify-center gap-3 text-gray-400 font-semibold text-[14px] tracking-wide uppercase">
-          <span>Ayah-{surah.numberOfAyahs}</span>
-          <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
-          <span>{revelationCity}</span>
+        <div className="flex items-center justify-center gap-2 text-gray-500 dark:text-gray-400 font-medium text-[15px] tracking-tight">
+          <span>Ayah-{surah.numberOfAyahs}, {revelationCity}</span>
         </div>
-        
-        {(showBismillah || (surah.id !== 1 && surah.id !== 9)) && (
-          <div className="mt-8">
-            <span className="font-amiri text-[38px] text-gray-300 dark:text-gray-700 opacity-80" dir="rtl">
-              بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-            </span>
-          </div>
-        )}
       </div>
 
-      {/* Right side Illustration */}
-      <div className="flex-1 flex justify-end pointer-events-none hidden md:flex">
-        <div className="relative w-[180px] h-[120px] opacity-50 dark:opacity-70 transition-opacity">
-          <Image 
-            src={illustrationSrc} 
-            alt={revelationCity}
-            fill
-            sizes="180px"
-            loading="eager"
-            className="object-contain"
-            style={{ transform: 'scaleX(-1)' }} // Mirror the image for the right side
-          />
-        </div>
-      </div>
+      {/* Spacer for symmetry on mobile, or could be right empty space */}
+      <div className="hidden md:block w-[220px]"></div>
     </div>
   );
 }
