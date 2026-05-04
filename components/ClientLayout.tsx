@@ -51,7 +51,7 @@ export default function ClientLayout({ children, surahs }: Props) {
           {/* Header */}
           <header className="sticky top-0 z-30 bg-white dark:bg-[#1F1F1F] border-b border-[var(--border)] px-4 lg:px-8 h-16 shrink-0 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button onClick={() => setIsSurahListOpen(true)} className="p-2 text-gray-500 hover:text-brand-500 transition-colors">
+              <button onClick={() => setIsSurahListOpen(true)} className="p-2 text-gray-500 dark:text-white hover:text-brand-500 transition-colors">
                 <Menu size={24} />
               </button>
               <div className="flex items-center gap-2">
@@ -60,20 +60,20 @@ export default function ClientLayout({ children, surahs }: Props) {
             </div>
             
             <div className="flex items-center gap-1 sm:gap-4">
-              <button className="p-2 text-gray-400 hover:text-brand-500 transition-colors rounded-full" onClick={() => window.location.href='/search'}>
+              <button className="p-2 text-gray-400 dark:text-white hover:text-brand-500 transition-colors rounded-full" onClick={() => window.location.href='/search'}>
                 <Search size={22} />
               </button>
               
               {mounted && (
                 <button 
-                  className="p-2 text-gray-400 hover:text-brand-500 transition-colors rounded-full" 
+                  className="p-2 text-gray-400 dark:text-white hover:text-brand-500 transition-colors rounded-full" 
                   onClick={toggleTheme}
                 >
                   {theme === 'light' ? <Moon size={22} fill="currentColor" /> : <Sun size={22} fill="currentColor" />}
                 </button>
               )}
               
-              <button className="p-2 text-gray-400 hover:text-brand-500 transition-colors rounded-full" onClick={() => setIsSettingsOpen(true)}>
+              <button className="p-2 text-gray-400 dark:text-white hover:text-brand-500 transition-colors rounded-full" onClick={() => setIsSettingsOpen(true)}>
                 <Settings size={22} fill="currentColor" />
               </button>
             </div>

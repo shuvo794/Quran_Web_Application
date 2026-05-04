@@ -14,7 +14,7 @@ export default function SurahHeader({ surah, showBismillah }: Props) {
   return (
     <div className="relative flex flex-col items-center py-12 mb-12 border-b border-gray-100 dark:border-gray-800/40 text-center">
       <Link href={`/surah/${surah.id}`} className="group mb-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight">
           Surah {surah.nameEnglish}
         </h1>
       </Link>

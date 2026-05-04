@@ -24,7 +24,7 @@ const SurahCard = memo(({ surah, isActive, onClick }: { surah: Surah; isActive: 
         <span className={`relative z-10 text-base font-bold transition-colors ${isActive ? 'text-white' : 'text-gray-600 dark:text-gray-400 group-hover:text-white'}`}>{surah.id}</span>
       </div>
       <div>
-        <h3 className={`font-bold text-lg transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+        <h3 className={`font-bold text-lg transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white'}`}>
           {surah.nameEnglish}
         </h3>
         <p className="text-sm text-gray-400 font-medium">{surah.nameTranslation}</p>
@@ -76,7 +76,7 @@ const JuzCard = memo(({ juz, surahIds, surahs, expandedJuz, onToggle, pathname, 
                   <span className={`relative z-10 text-sm font-bold transition-colors ${isSurahActive ? 'text-white' : 'text-gray-500'}`}>{surahId}</span>
                 </div>
                 <div>
-                  <h3 className={`font-bold text-[15px] transition-colors ${isSurahActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>{surah.nameEnglish}</h3>
+                  <h3 className={`font-bold text-[15px] transition-colors ${isSurahActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white'}`}>{surah.nameEnglish}</h3>
                   <p className="text-[11px] text-gray-400 font-medium">{surah.nameTranslation}</p>
                 </div>
               </Link>
@@ -105,7 +105,7 @@ const PageCard = memo(({ page, isActive, onClick }: { page: number; isActive: bo
         <span className={`relative z-10 text-sm font-bold transition-colors ${isActive ? 'text-white' : 'text-gray-700 dark:text-gray-300 group-hover:text-white'}`}>{page}</span>
       </div>
       <div className="flex-1 flex justify-between items-center">
-        <h3 className={`font-bold text-[16px] transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>Page {page}</h3>
+        <h3 className={`font-bold text-[16px] transition-colors ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white'}`}>Page {page}</h3>
       </div>
     </div>
   </Link>

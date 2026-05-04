@@ -67,7 +67,7 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
       >
         {ayah.words && ayah.words.length > 0 ? (
           <p
-            className={`${arabicFont} leading-[2.5] md:leading-[2.8] text-right text-gray-800 dark:text-gray-100 group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
+            className={`${arabicFont} leading-[2.5] md:leading-[2.8] text-right text-[var(--foreground)] group-hover/ayah:text-[#2E7D32] transition-colors duration-300`}
             style={{ fontSize: `${arabicFontSize}px` }}
             dir="rtl"
           >
@@ -111,7 +111,7 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
           </p>
         ) : (
           <p
-            className={`${arabicFont} leading-loose text-right text-gray-800 dark:text-gray-100 transition-colors`}
+            className={`${arabicFont} leading-loose text-right text-[var(--foreground)] transition-colors`}
             style={{ fontSize: `${arabicFontSize}px` }}
             dir="rtl"
           >
@@ -126,7 +126,7 @@ export default memo(function AyahCard({ ayah, surahId }: Props) {
           SAHEEH INTERNATIONAL
         </p>
         <p
-          className="text-gray-700 dark:text-gray-300 font-inter leading-relaxed font-normal"
+          className="text-[var(--foreground)] font-inter leading-relaxed font-normal"
           style={{ fontSize: `${translationFontSize}px` }}
         >
           {ayah.translation}
